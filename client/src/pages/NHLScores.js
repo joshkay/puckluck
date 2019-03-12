@@ -1,36 +1,16 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+import React from 'react';
+import { Typography } from '@material-ui/core';
+import NHLGameScores from '../components/nhl/NHLGameScores';
 
-import logo from '../logo.svg';
-import '../App.css';
+const NHLScores = () =>
+(
+  <div>
+    <Typography variant='h2'>
+      Scores
+    </Typography>
 
-class NHLScores extends Component 
-{
-  constructor(props)
-  {
-    super(props);
-
-    this.state = {
-      games: null
-    }
-  }
-
-  async componentDidMount()
-  {
-    const { data } = await axios.get('/api/nhl/scores');
-    console.log(data);
-  }
-
-  render() 
-  {
-    return (
-      <div>
-        <h1>Scores</h1>
-        { this.state.games }
-      </div>
-    );
-  }
-}
+    <NHLGameScores />
+  </div>
+);
 
 export default NHLScores;
