@@ -25,7 +25,7 @@ const games = (
       return Object.assign({}, state, {
         isFetching: false,
         didInvalidate: false,
-        items: action.games,
+        items: action.dates,
         lastUpdated: action.receivedAt
       });
     default:

@@ -26,8 +26,9 @@ export const fetchGames = (date) =>
   {
     dispatch(requestGames(date));
 
-    const { data } = await axios.get('/api/nhl/scores');
-    return dispatch(receiveGames(date, data.games));
+    const { data } = await axios.get('/api/nhl/games/2019-03-13/2019-03-15');
+    console.log(data);
+    return dispatch(receiveGames(date, data.dates));
   }
 };
 
