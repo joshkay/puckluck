@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import moment from 'moment';
 
-import NHLGameScoreListing from './NHLScoreListing';
+import NHLScoreListing from './NHLScoreListing';
 
 const styles =
 {
@@ -13,7 +13,7 @@ const styles =
   }
 }
 
-class NHLGameScores extends Component 
+class NHLScores extends Component 
 {
   constructor(props)
   {
@@ -36,7 +36,7 @@ class NHLGameScores extends Component
       const gameListings = games.items.map((game, index) =>
       (
         <Grid item key={ index }>
-          <NHLGameScoreListing
+          <NHLScoreListing
             homeTeam={{ id: game.home.id, name: game.home.name, score: game.home.score }}
             awayTeam={{ id: game.away.id, name: game.away.name, score: game.away.score }}
             date={ game.date }
@@ -61,8 +61,8 @@ class NHLGameScores extends Component
   }
 }
 
-NHLGameScores.propTypes = {
+NHLScores.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(NHLGameScores);
+export default withStyles(styles)(NHLScores);

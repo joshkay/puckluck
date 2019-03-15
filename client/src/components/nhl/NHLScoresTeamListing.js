@@ -20,7 +20,7 @@ const styles =
   }
 };
 
-let NHLGameTeamScoreListing = ({ classes, id, name, score }) =>
+let NHLScoresTeamListing = ({ classes, id, name, score }) =>
 (
   <div className={classes.container}>
     <img alt={ `${name}'s Team Logo` } src={logoUrl(id)} className={classes.logo} />
@@ -33,11 +33,11 @@ let NHLGameTeamScoreListing = ({ classes, id, name, score }) =>
   </div>
 );
 
-NHLGameTeamScoreListing.propTypes = {
+NHLScoresTeamListing.propTypes = {
   classes: PropTypes.object.isRequired,
   id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
-  score: PropTypes.number.isRequired
+  score: PropTypes.number
 };
 
-export default withStyles(styles)(NHLGameTeamScoreListing);
+export default withStyles(styles)(NHLScoresTeamListing);

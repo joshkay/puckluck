@@ -4,8 +4,9 @@ import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import moment from 'moment';
 
-import NHLGameTeamScoreListing from './NHLScoresTeamListing';
+import NHLScoresTeamListing from './NHLScoresTeamListing';
 
 const styles = 
 {
@@ -17,24 +18,45 @@ const styles =
   }
 };
 
-let NHLGameScoreListing = ({ classes, homeTeam, awayTeam, date, status }) =>
+const getGameStatus = (status, date) =>
+{
+  if (status === 'Final')
+  {
+    return status;
+  }
+  if (status === 'Scheduled')
+  {
+    return moment(date).format('h:mm A');
+  }
+}
+
+const getGameScore = (status, score) =>
+{
+  if (status === 'Scheduled')
+  {
+    return null;
+  }
+  return score;
+}
+
+let NHLScoreListing = ({ classes, homeTeam, awayTeam, date, status }) =>
 (
   <Card className={classes.card}>
     <CardContent>
       <Typography className={classes.title}>
-        { status }
+        { getGameStatus(status, date) }
       </Typography>
-      <NHLGameTeamScoreListing id={homeTeam.id}
-        name={homeTeam.name} score={homeTeam.score}
+      <NHLScoresTeamListing id={homeTeam.id}
+        name={homeTeam.name} score={ getGameScore(status, homeTeam.score) }
       />
-      <NHLGameTeamScoreListing id={awayTeam.id}
-        name={awayTeam.name} score={awayTeam.score}
+      <NHLScoresTeamListing id={awayTeam.id}
+        name={awayTeam.name} score={ getGameScore(status, awayTeam.score) }
       />
     </CardContent>
   </Card>
 );
 
-NHLGameScoreListing.propTypes = {
+NHLScoreListing.propTypes = {
   classes: PropTypes.object.isRequired,
   homeTeam: PropTypes.object.isRequired,
   awayTeam: PropTypes.object.isRequired,
@@ -42,4 +64,4 @@ NHLGameScoreListing.propTypes = {
   status: PropTypes.string.isRequired
 };
 
-export default withStyles(styles)(NHLGameScoreListing);
+export default withStyles(styles)(NHLScoreListing);
