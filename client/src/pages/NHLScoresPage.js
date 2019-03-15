@@ -1,16 +1,16 @@
 import React from 'react';
 import { Typography } from '@material-ui/core';
-import NHLGameScores from '../components/nhl/NHLGameScores';
+import LiveNHLScores from '../containers/LiveNHLScores';
 
-const NHLScores = () =>
+const NHLScoresPage = () =>
 (
   <div>
     <Typography variant='h2'>
       Scores
     </Typography>
 
-    <NHLGameScores />
+    <LiveNHLScores />
   </div>
 );
 
-export default NHLScores;
+export default NHLScoresPage;
