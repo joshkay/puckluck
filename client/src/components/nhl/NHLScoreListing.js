@@ -18,33 +18,39 @@ const styles =
   }
 };
 
-const getGameStatus = (status, date) =>
+const hasGameStarted = (status) =>
 {
-  if (status === 'Final')
-  {
-    return status;
-  }
-  if (status === 'Scheduled')
+  return (status !== 'Scheduled' && status !== 'Pre-Game');
+}
+
+const getGameStatus = (status, date, period, periodTimeLeft) =>
+{
+  if (!hasGameStarted(status))
   {
     return moment(date).format('h:mm A');
   }
+  else if (status.includes('In Progress'))
+  {
+    return `${period} ${periodTimeLeft === 'END' ? 'Intermission' : periodTimeLeft}`;
+  }
+
+  return status;
 }
 
 const getGameScore = (status, score) =>
 {
-  if (status === 'Scheduled')
+  if (hasGameStarted(status))
   {
-    return null;
+    return score;
   }
-  return score;
 }
 
-let NHLScoreListing = ({ classes, homeTeam, awayTeam, date, status }) =>
+let NHLScoreListing = ({ classes, homeTeam, awayTeam, date, status, period, periodTimeLeft }) =>
 (
   <Card className={classes.card}>
     <CardContent>
       <Typography className={classes.title}>
-        { getGameStatus(status, date) }
+        { getGameStatus(status, date, period, periodTimeLeft) }
       </Typography>
       <NHLScoresTeamListing id={homeTeam.id}
         name={homeTeam.name} score={ getGameScore(status, homeTeam.score) }
@@ -61,7 +67,9 @@ NHLScoreListing.propTypes = {
   homeTeam: PropTypes.object.isRequired,
   awayTeam: PropTypes.object.isRequired,
   date: PropTypes.string.isRequired,
-  status: PropTypes.string.isRequired
+  status: PropTypes.string.isRequired,
+  period: PropTypes.string,
+  periodTimeLeft: PropTypes.string
 };
 
 export default withStyles(styles)(NHLScoreListing);

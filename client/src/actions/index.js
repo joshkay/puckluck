@@ -1,65 +1,80 @@
 import axios from 'axios';
 
-export const REQUEST_GAMES = 'REQUEST_GAMES';
-export const requestGames = (date) =>
+export const SELECT_DATE = 'SELECT_DATE';
+export const selectDate = (date) =>
 {
   return {
-    type: REQUEST_GAMES,
+    type: SELECT_DATE,
     date
   }
 };
 
+export const REQUEST_GAMES_TODAY = 'REQUEST_GAMES_TODAY';
+export const requestGamesToday = () =>
+{
+  return {
+    type: REQUEST_GAMES_TODAY
+  }
+};
+
+export const REQUEST_GAMES_ON_DATE = 'REQUEST_GAMES_DATE';
+export const requestGamesOnDate = (date) =>
+{
+  return {
+    type: REQUEST_GAMES_TODAY,
+    date
+  }
+};
+
+export const REQUEST_GAMES_IN_DATE_RANGE = 'REQUEST_GAMES_IN_DATE_RANGE';
+export const requestGamesInDateRange = (startDate, endDate) =>
+{
+  return {
+    type: REQUEST_GAMES_IN_DATE_RANGE,
+    startDate,
+    endDate
+  }
+};
+
 export const RECEIVE_GAMES = 'RECEIVE_GAMES';
-export const receiveGames = (date, games) =>
+export const receiveGames = (gamesByDate) =>
 {
   return {
     type: RECEIVE_GAMES,
-    date,
-    games,
+    gamesByDate,
     receivedAt: Date.now()
   }
 };
 
-export const fetchGames = (date) =>
+export const fetchGamesToday = () =>
 {
   return async (dispatch) =>
   {
-    dispatch(requestGames(date));
+    dispatch(requestGamesToday());
 
-    const { data } = await axios.get('/api/nhl/games/2019-03-13/2019-03-15');
-    console.log(data);
-    return dispatch(receiveGames(date, data.dates));
+    const { data } = await axios.get('/api/nhl/games');
+    return dispatch(receiveGames(data.dates));
   }
 };
 
-export const shouldFetchGames = (state, date) =>
+export const fetchGamesOnDate = (date) =>
 {
-  const games = state.gamesByDate[date];
-  if (!games)
+  return async (dispatch) =>
   {
-    return true;
-  }
-  else if (games.isFetching)
-  {
-    return false;
-  }
-  else
-  {
-    return games.didInvalidate;
+    dispatch(requestGamesOnDate(date));
+
+    const { data } = await axios.get(`/api/nhl/games/${date}`);
+    return dispatch(receiveGames(data.dates));
   }
 };
 
-export const fetchGamesIfNeeded = (date) =>
+export const fetchGamesInDateRange = (startDate, endDate) =>
 {
-  return (dispatch, getState) =>
+  return async (dispatch) =>
   {
-    if (shouldFetchGames(getState(), date))
-    {
-      return dispatch(fetchGames(date));
-    }
-    else
-    {
-      return Promise.resolve();
-    }
+    dispatch(requestGamesInDateRange(startDate, endDate));
+
+    const { data } = await axios.get(`/api/nhl/games/${startDate}/${endDate}`);
+    return dispatch(receiveGames(data.dates));
   }
 };

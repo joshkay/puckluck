@@ -1,26 +1,31 @@
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { fetchGames } from '../actions';
+import { API_DATE_FORMAT } from '../common/nhl/helpers';
+import { fetchGamesToday, fetchGamesOnDate } from '../actions';
+import { getDateOfActiveGames, getDateTimeOfNextGameToday } from '../store/helpers';
 import NHLScores from '../components/nhl/NHLScores';
-
-const getGamesForDates = (dates) =>
-{
-  
-}
 
 const mapStateToProps = (state) =>
 {
+  const date = moment(state.selectedDate).format(API_DATE_FORMAT);
   return {
-    games: state.gamesByDate[moment().format('YYYY-MM-DD')]
+    games: state.gamesByDate[date],
+    date,
+    activeDate: getDateOfActiveGames(state),
+    nextGameDateTime: getDateTimeOfNextGameToday(state)
   }
 }
 
 const mapDispatchToProps = (dispatch) =>
 {
   return {
-    onScoreUpdateRequest: (date) => 
+    onScoreLoadRequest: (date) =>
     {
-      dispatch(fetchGames(date))
+      dispatch(fetchGamesOnDate(date));
+    },
+    onScoreUpdateRequest: () => 
+    {
+      dispatch(fetchGamesToday());
     }
   }
 }
