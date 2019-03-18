@@ -6,6 +6,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import moment from 'moment';
 
+import { getGameScore, getGameStatus } from '../../common/nhl/helpers';
+
 import NHLScoresTeamListing from './NHLScoresTeamListing';
 
 const styles = 
@@ -17,33 +19,6 @@ const styles =
     fontSize: 14
   }
 };
-
-const hasGameStarted = (status) =>
-{
-  return (status !== 'Scheduled' && status !== 'Pre-Game');
-}
-
-const getGameStatus = (status, date, period, periodTimeLeft) =>
-{
-  if (!hasGameStarted(status))
-  {
-    return moment(date).format('h:mm A');
-  }
-  else if (status.includes('In Progress'))
-  {
-    return `${period} ${periodTimeLeft === 'END' ? 'Intermission' : periodTimeLeft}`;
-  }
-
-  return status;
-}
-
-const getGameScore = (status, score) =>
-{
-  if (hasGameStarted(status))
-  {
-    return score;
-  }
-}
 
 let NHLScoreListing = ({ classes, homeTeam, awayTeam, date, status, period, periodTimeLeft }) =>
 (

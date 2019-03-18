@@ -42,8 +42,6 @@ class NHLScores extends Component
 
   componentDidUpdate(prevProps) 
   {
-    console.log(this.props.nextGameDateTime);
-
     if (this.props.date !== prevProps.date) 
     {
       this.startUpdatesForDate(this.props.date);
