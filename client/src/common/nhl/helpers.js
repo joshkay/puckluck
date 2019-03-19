@@ -26,7 +26,6 @@ export const isGameOver = (status) =>
 
 export const getGameStatus = (status, date, period, periodTimeLeft) =>
 {
-  console.log(status);
   if (!hasGameStarted(status))
   {
     return moment(date).format('h:mm A');

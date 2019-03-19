@@ -122,8 +122,8 @@ class NHLScores extends Component
 
     return (
       <div>
-        <Typography variant='h5'>
-          { moment(this.props.date).format('MMMM Do YYYY') }
+        <Typography variant='h5' data-cy="nhl-scores-date">
+          { moment(this.props.date).format('MMMM Do, YYYY') }
         </Typography>
         <Grid container className={classes.root} spacing={16}>
           { this.renderGames(this.props.games) }

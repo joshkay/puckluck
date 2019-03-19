@@ -22,7 +22,7 @@ const styles =
 
 let NHLScoreListing = ({ classes, homeTeam, awayTeam, date, status, period, periodTimeLeft }) =>
 (
-  <Card className={classes.card}>
+  <Card className={classes.card} data-cy="nhl-score-listing">
     <CardContent>
       <Typography className={classes.title}>
         { getGameStatus(status, date, period, periodTimeLeft) }

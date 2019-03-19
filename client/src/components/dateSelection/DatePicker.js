@@ -50,13 +50,13 @@ let DatePicker = ({ classes, currentDate, activeDate, numDatesBefore, numDatesAf
 
   return (
     <Grid container alignItems="center">
-      <IconButton onClick={openPicker}>
+      <IconButton onClick={openPicker} data-cy="calendar-date-picker">
         <CalendarToday />
       </IconButton>
       <InlineDatePicker value={currentDate} onChange={onDateSelect} 
         ref={pickerRef} style={{display: 'none'}} />
 
-      <div>
+      <div data-cy="date-selection">
         { datesBefore }
         <DateSelection date={date} active={true} 
           onClick={onDateSelect} badge={isActive(date, activeDate)} />
