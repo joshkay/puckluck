@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/server.js",
     "test": "cypress open",
-    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
+    "heroku-postbuild": "cd client && npm install --only=prod && npm run build"
   },
   "repository": {
     "type": "git",
