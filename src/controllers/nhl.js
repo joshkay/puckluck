@@ -1,18 +1,26 @@
-const nhlScoresQueries = require('../nhlApi/queries/scores');
-const nhlScheduleQueries = require('../nhlApi/queries/schedule');
+const nhlGamesQueries = require('../nhlApi/queries/games');
 
 module.exports = 
 {
-  async scores(req, res, next)
+  async games(req, res, next)
   {
-    let scores = await nhlScoresQueries.getScores();
+    let scores = await nhlGamesQueries.getGames();
 
     res.json(scores);
   },
-  async schedule(req, res, next)
+  async gamesOnDate(req, res, next)
   {
-    let schedule = await nhlScheduleQueries.getSchedule();
+    const date = req.params.date;
+    let scores = await nhlGamesQueries.getGames(date);
 
-    res.json(schedule);
+    res.json(scores);
+  },
+  async gamesInDateRange(req, res, next)
+  {
+    const startDate = req.params.startDate;
+    const endDate = req.params.endDate;
+    let scores = await nhlGamesQueries.getGames(startDate, endDate);
+
+    res.json(scores);
   }
 };

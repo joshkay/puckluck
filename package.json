@@ -5,7 +5,7 @@
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
-    "test": "set NODE_ENV=test&&set PORT=3001&& jasmine",
+    "test": "cypress open",
     "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
   "repository": {
@@ -25,6 +25,6 @@
     "moment": "^2.24.0"
   },
   "devDependencies": {
-    "jasmine": "^3.3.1"
+    "cypress": "^3.2.0"
   }
 }
