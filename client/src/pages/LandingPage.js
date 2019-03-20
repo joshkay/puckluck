@@ -41,14 +41,14 @@ class LandingPage extends Component
 
     return (
       <div>
-        <main className={classes.landingImage}>
+        <main className={classes.landingImage} data-cy="landing-container">
           <div className={classes.landingPromo}>
-            <Typography variant="h1" className={classes.landingHeader}>
+            <Typography variant="h1" className={classes.landingHeader} data-cy="landing-header">
               NHL Fantasy
             </Typography>
           </div>
         </main>
-        <Grid container alignItems="stretch" justify="center">
+        <Grid container alignItems="stretch" justify="center" data-cy="landing-features">
           <Grid item sm={12} md={4}>
             <FeatureListing
               icon={<CalendarToday />}
