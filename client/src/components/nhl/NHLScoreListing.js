@@ -4,7 +4,6 @@ import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import moment from 'moment';
 
 import { getGameScore, getGameStatus } from '../../common/nhl/helpers';
 

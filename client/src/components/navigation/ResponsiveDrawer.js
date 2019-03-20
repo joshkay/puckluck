@@ -6,12 +6,10 @@ import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -53,10 +51,11 @@ const styles = theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing.unit * 3,
+    //padding: theme.spacing.unit * 3,
   },
   drawerLink: {
-    textDecoration: 'none'
+    textDecoration: 'none',
+    color: 'inherit'
   },
   drawerLinkIcon: {
     width: '1em',
@@ -88,7 +87,7 @@ class ResponsiveDrawer extends React.Component
       <div>
         <div className={classes.toolbar}>
           <Link to={'/'} className={classes.logo}>
-            <img src={`${process.env.PUBLIC_URL}/favicon-dark.ico`} />
+            <img alt="Puck Luck Icon" src={`${process.env.PUBLIC_URL}/favicon-dark.ico`} />
           </Link>
         </div>
         <Divider />
@@ -96,7 +95,7 @@ class ResponsiveDrawer extends React.Component
           <Link to={'/nhl/scores'} className={classes.drawerLink}>
             <ListItem button>
               <ListItemIcon>
-                <img className={classes.drawerLinkIcon} 
+                <img alt="NHL Logo" className={classes.drawerLinkIcon} 
                   src="https://www-league.nhlstatic.com/images/logos/league-light/133.svg" />
               </ListItemIcon>
               <ListItemText primary="NHL Scores" />
@@ -152,10 +151,10 @@ class ResponsiveDrawer extends React.Component
             </Drawer>
           </Hidden>
         </nav>
-        <main className={classes.content}>
+        <div className={classes.content}>
           <div className={classes.toolbar} />
           { this.props.children }
-        </main>
+        </div>
       </div>
     );
   }
@@ -163,9 +162,6 @@ class ResponsiveDrawer extends React.Component
 
 ResponsiveDrawer.propTypes = {
   classes: PropTypes.object.isRequired,
-  // Injected by the documentation to work in an iframe.
-  // You won't need it on your project.
-  container: PropTypes.object,
   theme: PropTypes.object.isRequired,
 };
 
