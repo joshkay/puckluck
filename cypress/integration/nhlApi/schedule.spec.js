@@ -1,5 +1,6 @@
 const axios = require('axios');
 const moment = require('moment');
+const activeDate = require('../../../client/src/common/nhl/helpers').activeDate;
 
 /// <reference types="Cypress" />
 
@@ -12,7 +13,7 @@ describe('NHL API', () =>
       const { data } = await axios.get('https://statsapi.web.nhl.com/api/v1/schedule');
 
       expect(data.dates.length).to.equal(1);
-      expect(moment().isSame(data.dates[0].date, 'day')).to.be.true;
+      expect(moment(activeDate).isSame(data.dates[0].date, 'day')).to.be.true;
 
       done();
     });
