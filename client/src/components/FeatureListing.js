@@ -8,32 +8,9 @@ const styles = theme => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    minHeight: '350px',
-    flexGrow: 1,
-    flexBasis: 0,
     padding: '40px',
     paddingTop: '60px',
-    backgroundColor: theme.palette.background.default,
-    border: `10px solid ${theme.palette.background.paper}`,
-    [theme.breakpoints.down('sm')]: {
-      minHeight: '400px'
-    },
-    [theme.breakpoints.down('md')]: {
-      '&:first-of-type': {
-        borderBottomWidth: '0px'
-      },
-      '&:last-of-type': {
-        borderTopWidth: '0px'
-      },
-    },
-    [theme.breakpoints.up('lg')]: {
-      '&:first-of-type': {
-        borderRightWidth: '0px'
-      },
-      '&:last-of-type': {
-        borderLeftWidth: '0px'
-      },
-    }
+    backgroundColor: theme.palette.background.default
   },
   icon: {
     fontSize: '3rem',
