@@ -1,20 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import { Grid, Typography } from '@material-ui/core';
 import moment from 'moment';
 
 import NHLScoreListing from './NHLScoreListing';
 
-const styles =
-{
-  root: {
-    flexGrow: 1,
-  }
-}
-
 const SCORE_UPDATE_INTERVAL = 10 * 1000;
-const GAME_SCHEDULE_UPDATE_INTERVAL = 60 * 1000;
+//const GAME_SCHEDULE_UPDATE_INTERVAL = 60 * 1000;
 
 class NHLScores extends Component 
 {
@@ -118,15 +110,15 @@ class NHLScores extends Component
 
   render() 
   {
-    const { classes } = this.props;
+    const { date, games } = this.props;
 
     return (
       <div>
         <Typography variant='h5' data-cy="nhl-scores-date">
-          { moment(this.props.date).format('MMMM Do, YYYY') }
+          { moment(date).format('MMMM Do, YYYY') }
         </Typography>
-        <Grid container className={classes.root} spacing={16}>
-          { this.renderGames(this.props.games) }
+        <Grid container spacing={16}>
+          { this.renderGames(games) }
         </Grid>
       </div>
     );
@@ -134,7 +126,8 @@ class NHLScores extends Component
 }
 
 NHLScores.propTypes = {
-  classes: PropTypes.object.isRequired
+  date: PropTypes.string.isRequired,
+  games: PropTypes.object
 };
 
-export default withStyles(styles)(NHLScores);
+export default NHLScores;

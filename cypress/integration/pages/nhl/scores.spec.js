@@ -1,3 +1,5 @@
+const activeDate = require('../../../../client/src/common/nhl/helpers').activeDate;
+
 describe('Page - NHL scores', () =>
 {
   before(() =>
@@ -11,16 +13,16 @@ describe('Page - NHL scores', () =>
 
     cy.get('[data-cy=date-selection]').children().should('have.length', 5);
     cy.get('[data-cy=date-selection]').children().first().should('have.text', 
-      Cypress.moment().subtract(2, 'days').format('MMMM D')
+      Cypress.moment(activeDate).subtract(2, 'days').format('MMMM D')
     );
     cy.get('[data-cy=date-selection] > :nth-child(3)').children().should('have.text', 
-      Cypress.moment().format('MMMM D')
+      Cypress.moment(activeDate).format('MMMM D')
     );
     cy.get('[data-cy=date-selection]').children().last().should('have.text', 
-      Cypress.moment().add(2, 'days').format('MMMM D')
+      Cypress.moment(activeDate).add(2, 'days').format('MMMM D')
     );
     
-    cy.get('[data-cy=nhl-scores-date]').should('have.text', Cypress.moment().format('MMMM Do, YYYY'));
+    cy.get('[data-cy=nhl-scores-date]').should('have.text', Cypress.moment(activeDate).format('MMMM Do, YYYY'));
 
     //cy.get('[data-cy=nhl-score-listing]').should('')
   });

@@ -13,14 +13,14 @@ let DateSelection = ({ date, onClick, active, badge }) =>
   if (badge)
   {
     content = (
-      <Badge color="primary" variant="dot">
+      <Badge color="secondary" variant="dot">
         {displayedDate}
       </Badge>
     );
   }
 
   return (
-    <Button color={ active ? 'primary' : null } onClick={() => onClick(date)}>
+    <Button color={ active ? 'secondary' : null } onClick={() => onClick(date)}>
       {content}
     </Button>
   );

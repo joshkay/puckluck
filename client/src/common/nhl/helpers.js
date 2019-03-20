@@ -16,7 +16,7 @@ export const hasGameStarted = (status) =>
 
 export const isGameInProgress = (status) =>
 (
-  status === 'In Progress'
+  status.includes('In Progress')
 );
 
 export const isGameOver = (status) =>
