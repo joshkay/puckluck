@@ -11,17 +11,14 @@ import NHLScoresTeamListing from './NHLScoresTeamListing';
 
 const styles = 
 {
-  card: {
-    width: 275,
-  },
   title: {
     fontSize: 14
   }
 };
 
-let NHLScoreListing = ({ classes, homeTeam, awayTeam, date, status, period, periodTimeLeft }) =>
+let NHLScoreListing = ({ classes, className, homeTeam, awayTeam, date, status, period, periodTimeLeft }) =>
 (
-  <Card className={classes.card} data-cy="nhl-score-listing">
+  <Card className={className} data-cy="nhl-score-listing">
     <CardContent>
       <Typography className={classes.title}>
         { getGameStatus(status, date, period, periodTimeLeft) }
@@ -38,6 +35,7 @@ let NHLScoreListing = ({ classes, homeTeam, awayTeam, date, status, period, peri
 
 NHLScoreListing.propTypes = {
   classes: PropTypes.object.isRequired,
+  className: PropTypes.string.isRequired,
   homeTeam: PropTypes.object.isRequired,
   awayTeam: PropTypes.object.isRequired,
   date: PropTypes.string.isRequired,

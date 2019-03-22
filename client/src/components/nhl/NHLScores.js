@@ -1,12 +1,26 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Typography } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import moment from 'moment';
 
 import NHLScoreListing from './NHLScoreListing';
 
 const SCORE_UPDATE_INTERVAL = 10 * 1000;
 //const GAME_SCHEDULE_UPDATE_INTERVAL = 60 * 1000;
+
+const styles = {
+  card: {
+    minWidth: 275,
+    width: '100%'
+  },
+  hide: {
+    visibility: 'hidden',
+    height: 0,
+    paddingTop: '0!important',
+    paddingBottom: '0!important'
+  }
+};
 
 class NHLScores extends Component 
 {
@@ -92,10 +106,11 @@ class NHLScores extends Component
   {
     if (games && games.items)
     {
+      const { classes } = this.props;
       const gameListings = games.items.map((game, index) =>
       (
-        <Grid item key={ index }>
-          <NHLScoreListing
+        <Grid item xs={12} sm key={ index }>
+          <NHLScoreListing className={classes.card}
             homeTeam={{ id: game.home.id, name: game.home.name, score: game.home.score }}
             awayTeam={{ id: game.away.id, name: game.away.name, score: game.away.score }}
             date={ game.date } status={ game.status }
@@ -108,26 +123,42 @@ class NHLScores extends Component
     }
   }
 
+  renderFakeFlexItems(amount)
+  {
+    const { classes } = this.props;
+    const fakes = Array.from(new Array(amount)).map((ele, index) =>
+    (
+      <Grid item xs={12} sm key={ index } className={classes.hide}>
+        <div className={classes.card}></div>
+      </Grid>
+    ));
+
+    return fakes;
+  }
+
   render() 
   {
     const { date, games } = this.props;
 
     return (
-      <div>
-        <Typography variant='h5' data-cy="nhl-scores-date">
+      [
+        <Typography key={0} variant='h5' data-cy="nhl-scores-date">
           { moment(date).format('MMMM Do, YYYY') }
         </Typography>
-        <Grid container spacing={16}>
+      ,
+        <Grid key={1} container spacing={16}>
           { this.renderGames(games) }
+          { this.renderFakeFlexItems(10) }
         </Grid>
-      </div>
+      ]
     );
   }
 }
 
 NHLScores.propTypes = {
+  classes: PropTypes.object.isRequired,
   date: PropTypes.string.isRequired,
   games: PropTypes.object
 };
 
-export default NHLScores;
+export default withStyles(styles)(NHLScores);
