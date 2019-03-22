@@ -49,20 +49,24 @@ let DatePicker = ({ classes, currentDate, activeDate, numDatesBefore, numDatesAf
   const date = moment(currentDate);
 
   return (
-    <Grid container alignItems="center">
-      <IconButton onClick={openPicker} data-cy="calendar-date-picker">
-        <CalendarToday />
-      </IconButton>
-      <InlineDatePicker value={currentDate} onChange={onDateSelect} 
-        ref={pickerRef} style={{display: 'none'}} />
-
-      <div data-cy="date-selection">
-        { datesBefore }
-        <DateSelection date={date} active={true} 
-          onClick={onDateSelect} badge={isActive(date, activeDate)} />
-        { datesAfter }
-      </div>
-    </Grid>
+    [
+      <Grid key={0} item>
+        <IconButton onClick={openPicker} data-cy="calendar-date-picker">
+          <CalendarToday />
+        </IconButton>
+        <InlineDatePicker value={currentDate} onChange={onDateSelect} 
+          ref={pickerRef} style={{display: 'none'}} />
+      </Grid>
+    ,
+      <Grid key={1} xs={12} md item>
+        <div data-cy="date-selection">
+          { datesBefore }
+          <DateSelection date={date} active={true} 
+            onClick={onDateSelect} badge={isActive(date, activeDate)} />
+          { datesAfter }
+        </div>
+      </Grid>
+    ]
   );
 };
 
