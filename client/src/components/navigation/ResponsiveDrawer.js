@@ -55,7 +55,9 @@ const styles = theme => ({
   },
   drawerLink: {
     textDecoration: 'none',
-    color: 'inherit'
+    color: 'inherit',
+    position: 'relative',
+    display: 'flex'
   },
   drawerLinkIcon: {
     width: '1em',
@@ -72,11 +74,19 @@ const styles = theme => ({
 
 class ResponsiveDrawer extends React.Component 
 {
-  state = {
-    mobileOpen: false,
-  };
+  constructor(props)
+  {
+    super(props);
 
-  handleDrawerToggle = () => {
+    this.handleDrawerToggle.bind(this);
+
+    this.state = {
+      mobileOpen: false,
+    };
+  }
+
+  handleDrawerToggle = () => 
+  {
     this.setState(state => ({ mobileOpen: !state.mobileOpen }));
   };
 
@@ -86,13 +96,15 @@ class ResponsiveDrawer extends React.Component
     const drawer = (
       <div>
         <div className={classes.toolbar}>
-          <Link to={'/'} className={classes.logo}>
+          <Link to={'/'} className={classes.logo}
+              onClick={this.handleDrawerToggle}>
             <img alt="Puck Luck Icon" src={`${process.env.PUBLIC_URL}/favicon-dark.ico`} />
           </Link>
         </div>
         <Divider />
         <List>
-          <Link to={'/nhl/scores'} className={classes.drawerLink}>
+          <Link to={'/nhl/scores'} className={classes.drawerLink}
+              onClick={this.handleDrawerToggle}>
             <ListItem button>
               <ListItemIcon>
                 <img alt="NHL Logo" className={classes.drawerLinkIcon} 
@@ -115,6 +127,7 @@ class ResponsiveDrawer extends React.Component
               aria-label="Open drawer"
               onClick={this.handleDrawerToggle}
               className={classes.menuButton}
+              data-cy="nav-open"
             >
               <MenuIcon />
             </IconButton>
@@ -125,7 +138,7 @@ class ResponsiveDrawer extends React.Component
         </AppBar>
         <nav className={classes.drawer}>
           {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-          <Hidden mdUp implementation="css">
+          <Hidden mdUp implementation="js">
             <Drawer
               container={this.props.container}
               variant="temporary"
@@ -135,23 +148,25 @@ class ResponsiveDrawer extends React.Component
               classes={{
                 paper: classes.drawerPaper,
               }}
+              data-cy="nav-mobile"
             >
               {drawer}
             </Drawer>
           </Hidden>
-          <Hidden smDown implementation="css">
+          <Hidden smDown implementation="js">
             <Drawer
               classes={{
                 paper: classes.drawerPaper,
               }}
               variant="permanent"
               open
+              data-cy="nav-desktop"
             >
               {drawer}
             </Drawer>
           </Hidden>
         </nav>
-        <div className={classes.content}>
+        <div className={classes.content} data-cy="content">
           <div className={classes.toolbar} />
           { this.props.children }
         </div>
