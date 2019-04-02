@@ -7,7 +7,8 @@ export const logoUrl = (id) =>
   `https://www-league.nhlstatic.com/images/logos/teams-current-primary-light/${id}.svg`
 );
 
-export const activeDate = moment().subtract(5 , 'hours');
+export const activeDate = moment().subtract(5, 'hours');
+export const nhlAPIActiveDate = moment().subtract(11, 'hours');
 
 export const hasGameStarted = (status) =>
 (
