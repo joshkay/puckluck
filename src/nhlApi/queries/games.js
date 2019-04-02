@@ -18,7 +18,7 @@ module.exports =
 
     const { data } = await axios.get(url);
 
-    const parsedData =
+    const parsedData = data.dates.length ?
     {
       dates: Object.assign(...data.dates.map(date => (
       {
@@ -46,7 +46,7 @@ module.exports =
           ))
         } 
       })))
-    };
+    } : { dates: {} };
 
     return parsedData;
   }
