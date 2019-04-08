@@ -4,6 +4,7 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
+    "start": "tsc && node build/server.js",
     "dev": "node --inspect=5858 -r ts-node/register src/server.ts",
     "build": "tsc",
     "test": "cypress open",
