@@ -4,11 +4,10 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
-    "start": "node --inspect=5858 -r ts-node/register src/server.ts",
-    "dev": "nodemon",
+    "dev": "node --inspect=5858 -r ts-node/register src/server.ts",
     "build": "tsc",
     "test": "cypress open",
-    "heroku-postbuild": "cd client && npm install --only=prod && npm run build"
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "repository": {
     "type": "git",
@@ -25,15 +24,15 @@
     "axios": "^0.18.0",
     "dotenv": "^7.0.0",
     "express": "^4.16.4",
-    "moment": "^2.24.0"
+    "moment": "^2.24.0",
+    "@types/dotenv": "^6.1.1",
+    "@types/express": "^4.16.1",
+    "typescript": "^3.4.1"
   },
   "devDependencies": {
     "@bahmutov/add-typescript-to-cypress": "^2.0.0",
-    "@types/dotenv": "^6.1.1",
-    "@types/express": "^4.16.1",
     "cypress": "^3.2.0",
     "nodemon": "^1.18.10",
-    "ts-node": "^8.0.3",
-    "typescript": "^3.4.1"
+    "ts-node": "^8.0.3"
   }
 }
