@@ -5,6 +5,7 @@ import withWidth from '@material-ui/core/withWidth';
 import { withStyles } from '@material-ui/core/styles';
 import LiveNHLScores from '../containers/LiveNHLScores';
 import SelectedDatePicker from '../containers/SelectedDatePicker';
+import Divider from '@material-ui/core/Divider';
 
 const styles = theme => ({
   root: {
@@ -34,7 +35,7 @@ let NHLScoresPage = ({ width, classes }) =>
     <main className={classes.root}>
       <Grid container alignItems="center">
         <Grid item>
-          <Typography variant='h2'>
+          <Typography variant="h1">
             Scores
           </Typography>
         </Grid>
@@ -42,6 +43,8 @@ let NHLScoresPage = ({ width, classes }) =>
         <SelectedDatePicker numDatesBefore={getNumDatesBefore(width)}
           numDatesAfter={getNumDatesAfter(width)} />
       </Grid>
+
+      <Divider variant="fullWidth" />
 
       <LiveNHLScores />
     </main>
