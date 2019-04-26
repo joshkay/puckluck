@@ -9,7 +9,7 @@ describe('Page - NHL scores', () =>
 
   it('should show a score header with proper dates', () =>
   {
-    cy.get('h2').should('contain', 'Scores');
+    cy.get('h1').should('contain', 'Scores');
 
     cy.get('[data-cy=date-selection]').children().should('have.length', 5);
     cy.get('[data-cy=date-selection]').children().first().should('have.text', 

@@ -9,7 +9,7 @@ import NHLScoreListing from './NHLScoreListing';
 const SCORE_UPDATE_INTERVAL = 10 * 1000;
 //const GAME_SCHEDULE_UPDATE_INTERVAL = 60 * 1000;
 
-const styles = {
+const styles = theme => ({
   card: {
     minWidth: 275,
     width: '100%'
@@ -19,8 +19,12 @@ const styles = {
     height: 0,
     paddingTop: '0!important',
     paddingBottom: '0!important'
+  },
+  activeDate: {
+    paddingTop: theme.spacing.unit * 2,
+    paddingBottom: theme.spacing.unit * 2,
   }
-};
+});
 
 class NHLScores extends Component 
 {
@@ -138,11 +142,12 @@ class NHLScores extends Component
 
   render() 
   {
-    const { date, games } = this.props;
+    const { classes, date, games } = this.props;
 
     return (
       [
-        <Typography key={0} variant='h5' data-cy="nhl-scores-date">
+        <Typography key={0} variant='h2' data-cy="nhl-scores-date" 
+          className={classes.activeDate}>
           { moment(date).format('MMMM Do, YYYY') }
         </Typography>
       ,
@@ -161,4 +166,4 @@ NHLScores.propTypes = {
   games: PropTypes.object
 };
 
-export default withStyles(styles)(NHLScores);
+export default withStyles(styles, { withTheme: true })(NHLScores);

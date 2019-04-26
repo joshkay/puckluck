@@ -8,11 +8,16 @@ export const logoUrl = (id) =>
 );
 
 export const activeDate = moment().subtract(5, 'hours');
-export const nhlAPIActiveDate = moment().subtract(11, 'hours');
+export const nhlAPIActiveDate = moment().subtract(12, 'hours');
+
+export const hasGameTimeBeenScheduled = (status) =>
+(
+  !status.includes('Time TBD')
+);
 
 export const hasGameStarted = (status) =>
 (
-  status !== 'Scheduled' && status !== 'Pre-Game'
+  !status.includes('Scheduled') && status !== 'Pre-Game'
 );
 
 export const isGameInProgress = (status) =>
@@ -27,7 +32,11 @@ export const isGameOver = (status) =>
 
 export const getGameStatus = (status, date, period, periodTimeLeft) =>
 {
-  if (!hasGameStarted(status))
+  if (!hasGameTimeBeenScheduled(status))
+  {
+    return 'Time TBD';
+  }
+  else if (!hasGameStarted(status))
   {
     return moment(date).format('h:mm A');
   }
@@ -41,9 +50,9 @@ export const getGameStatus = (status, date, period, periodTimeLeft) =>
     {
       return `${status} / ${period}`;
     }
-
-    return status;
   }
+
+  return status;
 };
 
 export const getGameScore = (status, score) =>

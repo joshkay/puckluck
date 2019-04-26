@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import grey from '@material-ui/core/colors/grey';
-import deepPurple from '@material-ui/core/colors/deepPurple';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 import { MuiPickersUtilsProvider } from "material-ui-pickers";
 import MomentUtils from '@date-io/moment';
 import 'typeface-karla';
@@ -13,25 +11,9 @@ import LandingPage from '../pages/LandingPage';
 import NHLScoresPage from '../pages/NHLScoresPage';
 
 import configureStore from '../store';
+import theme from '../theme';
 
 const store = configureStore();
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { 
-      main: grey[900]
-    },
-    secondary: { 
-      main: deepPurple[600],
-      light: deepPurple[50],
-      dark: deepPurple[900]
-    }
-  },
-  typography: {
-    useNextVariants: true,
-    fontFamily: 'Karla'
-  }
-});
 
 class App extends Component 
 {
