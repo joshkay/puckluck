@@ -76,7 +76,7 @@ const loadPlayer = async (player, strapiTeam) =>
       firstName,
       lastName,
       position: positionCode,
-      jerseyNumber: Number.isInteger(primaryNumber) ? parseInt(primaryNumber) : undefined,
+      jerseyNumber: Number.isInteger(primaryNumber) ? parseInt(primaryNumber) : null,
       team: strapiTeam.id
     })
   }
