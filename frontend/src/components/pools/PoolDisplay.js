@@ -8,15 +8,24 @@ const GET_POOL_LINEUPS = gql`
     pools(where: {slug: $slug}) {
       id
       name
-      lineups {
+      lineups(sort: "points:DESC" ) {
         id
         name
         draftOrder
+        points
         players {
           id
           apiId
           firstName
           lastName
+          team {
+            apiId
+          }
+          stats(where: {year:20202021}) {
+            points
+            goals
+            assists
+          }
         }
       }
     }

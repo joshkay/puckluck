@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "stats",
+  "info": {
+    "name": "Stat"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "year": {
+      "type": "integer"
+    },
+    "type": {
+      "type": "string"
+    },
+    "points": {
+      "type": "integer"
+    },
+    "goals": {
+      "type": "integer"
+    },
+    "assists": {
+      "type": "integer"
+    },
+    "player": {
+      "model": "player",
+      "via": "stats"
+    }
+  }
+}

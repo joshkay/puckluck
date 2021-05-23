@@ -10,19 +10,34 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const LineupList = ({ lineups }) => {
+const LineupList = ({ lineups }) => 
+{
   const classes = useStyles();
+
+  let place = 1;
 
   return (
     <Grid className={classes.root} 
       container 
       spacing={2}>
       {
-        lineups !== undefined ? lineups.map((lineup, index) => (
-          <Grid key={index} item xs={6}>
-            <LineupListDisplay {...lineup} />
-          </Grid>
-        )) : null
+        lineups !== undefined ? lineups.map((lineup, index) => 
+        {
+          if (index > 0 && lineups[index - 1].points > lineup.points)
+          {
+            place++;
+          }
+
+          return (
+            <Grid key={index} item xs={12} md={6} lg={4}>
+              <LineupListDisplay
+                leader={lineups[0].points <= lineup.points}
+                place={place}
+                {...lineup} 
+              />
+            </Grid>
+          )
+        }) : null
       }
     </Grid>
   );

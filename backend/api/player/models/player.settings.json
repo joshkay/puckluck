@@ -33,6 +33,10 @@
     },
     "name": {
       "type": "string"
+    },
+    "stats": {
+      "via": "player",
+      "collection": "stat"
     }
   }
 }

@@ -23,23 +23,11 @@ const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
   },
-  drawer: {
-    [theme.breakpoints.up('md')]: {
-      width: drawerWidth,
-      flexShrink: 0,
-    },
-  },
   appBar: {
-    marginLeft: drawerWidth,
-    [theme.breakpoints.up('md')]: {
-      width: `calc(100% - ${drawerWidth}px)`,
-    },
+    marginLeft: drawerWidth
   },
   menuButton: {
     marginRight: 20,
-    [theme.breakpoints.up('md')]: {
-      display: 'none',
-    },
   },
   toolbar: {
     display: 'flex',
@@ -99,7 +87,7 @@ const ResponsiveDrawer = ({ theme, container, children }) =>
       </div>
       <Divider />
       <List>
-        <Link href="/nhl/scores">
+        {/* <Link href="/nhl/scores">
           <a
             className={classes.drawerLink}
             onClick={handleDrawerToggle}
@@ -112,7 +100,7 @@ const ResponsiveDrawer = ({ theme, container, children }) =>
               <ListItemText primary="NHL Scores" />
             </ListItem>
           </a>
-        </Link>
+        </Link> */}
         <Link href="/pools">
           <a
             className={classes.drawerLink}
@@ -154,34 +142,19 @@ const ResponsiveDrawer = ({ theme, container, children }) =>
         </Toolbar>
       </AppBar>
       <nav className={classes.drawer}>
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Hidden mdUp implementation="js">
-          <Drawer
-            container={container}
-            variant="temporary"
-            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            data-cy="nav-mobile"
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-        <Hidden smDown implementation="js">
-          <Drawer
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            variant="permanent"
-            open
-            data-cy="nav-desktop"
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
+        <Drawer
+          container={container}
+          variant="temporary"
+          anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+          data-cy="nav"
+        >
+          {drawer}
+        </Drawer>
       </nav>
       <div className={classes.content} data-cy="content">
         <div className={classes.toolbar} />

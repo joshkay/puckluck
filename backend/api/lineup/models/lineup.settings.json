@@ -29,6 +29,10 @@
     },
     "draftOrder": {
       "type": "integer"
+    },
+    "points": {
+      "type": "integer",
+      "default": 0
     }
   }
 }

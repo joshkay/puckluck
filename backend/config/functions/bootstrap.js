@@ -11,5 +11,5 @@
  */
 
 module.exports = async () => {
-  //await strapi.config.functions.nhl.loadPlayers();
+  await strapi.config.functions.nhl.loadAllData();
 };
