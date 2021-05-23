@@ -45,19 +45,20 @@ const loadPlayer = async (player, strapiTeam) =>
         firstName,
         lastName,
         position: positionCode,
-        jerseyNumber: Number.isInteger(primaryNumber) ? parseInt(primaryNumber) : undefined,
+        jerseyNumber: Number.isInteger(primaryNumber) ? parseInt(primaryNumber) : null,
         team: strapiTeam.id
       })
     }
     catch (err)
     {
+      console.log(primaryNumber)
       console.log({
         apiId: id,
         name: `${fullName} (${strapiTeam.abbreviation})`,
         firstName,
         lastName,
         position: positionCode,
-        jerseyNumber: Number.isInteger(primaryNumber) ? parseInt(primaryNumber) : undefined,
+        jerseyNumber: Number.isInteger(primaryNumber) ? parseInt(primaryNumber) : null,
         team: strapiTeam.id
       })
       console.log(err);
