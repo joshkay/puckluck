@@ -1,0 +1,38 @@
+{
+  "kind": "collectionType",
+  "collectionName": "players",
+  "info": {
+    "name": "Player",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "position": {
+      "type": "string"
+    },
+    "jerseyNumber": {
+      "type": "integer"
+    },
+    "apiId": {
+      "type": "biginteger"
+    },
+    "team": {
+      "model": "team",
+      "via": "players"
+    },
+    "name": {
+      "type": "string"
+    }
+  }
+}

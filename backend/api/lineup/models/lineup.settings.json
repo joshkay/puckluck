@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "lineups",
+  "info": {
+    "name": "Lineup",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "pool": {
+      "via": "lineups",
+      "model": "pool"
+    },
+    "owner": {
+      "plugin": "users-permissions",
+      "model": "user",
+      "via": "lineup"
+    },
+    "players": {
+      "collection": "player"
+    },
+    "draftOrder": {
+      "type": "integer"
+    }
+  }
+}

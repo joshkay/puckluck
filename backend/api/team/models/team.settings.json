@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "teams",
+  "info": {
+    "name": "Team"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "apiId": {
+      "type": "integer"
+    },
+    "abbreviation": {
+      "type": "string"
+    },
+    "teamName": {
+      "type": "string"
+    },
+    "locationName": {
+      "type": "string"
+    },
+    "conference": {
+      "type": "string"
+    },
+    "division": {
+      "type": "string"
+    },
+    "players": {
+      "via": "team",
+      "collection": "player"
+    }
+  }
+}

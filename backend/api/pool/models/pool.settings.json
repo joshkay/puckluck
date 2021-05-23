@@ -1,0 +1,49 @@
+{
+  "kind": "collectionType",
+  "collectionName": "pools",
+  "info": {
+    "name": "Pool",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "year": {
+      "type": "integer"
+    },
+    "league": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "image": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
+    },
+    "lineups": {
+      "via": "pool",
+      "collection": "lineup"
+    },
+    "slug": {
+      "type": "string",
+      "unique": true
+    }
+  }
+}
