@@ -44,7 +44,7 @@ const loadPlayer = async (player, strapiTeam) =>
       firstName,
       lastName,
       position: positionCode,
-      jerseyNumber: primaryNumber,
+      jerseyNumber: parseInt(primaryNumber),
       team: strapiTeam.id
     })
     strapiPlayer = await strapi.query('player').create({
@@ -53,7 +53,7 @@ const loadPlayer = async (player, strapiTeam) =>
       firstName,
       lastName,
       position: positionCode,
-      jerseyNumber: primaryNumber,
+      jerseyNumber: parseInt(primaryNumber),
       team: strapiTeam.id
     })
   }
@@ -65,7 +65,7 @@ const loadPlayer = async (player, strapiTeam) =>
       firstName,
       lastName,
       position: positionCode,
-      jerseyNumber: primaryNumber,
+      jerseyNumber: parseInt(primaryNumber),
       team: strapiTeam.id
     })
   }
