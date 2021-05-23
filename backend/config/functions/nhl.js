@@ -51,7 +51,6 @@ const loadPlayer = async (player, strapiTeam) =>
     }
     catch (err)
     {
-      console.log(primaryNumber)
       console.log({
         apiId: id,
         name: `${fullName} (${strapiTeam.abbreviation})`,
@@ -192,9 +191,9 @@ const loadStats = async (strapiPlayer) =>
       await strapi.query('stat').create({
         year: STATS_YEAR,
         type: 'playoffs',
-        points: stats.points,
-        goals: stats.goals,
-        assists: stats.assists,
+        points: Number.isInteger(stats.points) ? parseInt(stats.points) : null,
+        goals: Number.isInteger(stats.goals) ? parseInt(stats.goals) : null,
+        assists: Number.isInteger(stats.assists) ? parseInt(stats.assists) : null,
         player: strapiPlayer.id
       });
     }
