@@ -15,7 +15,7 @@ module.exports = {
    * Simple example.
    * Every day at 8am.
    */
-  '* /15 * * * *': {
+  '*/15 * * * *': {
     task: async () => {
       await strapi.config.functions.nhl.loadAllData();
     },
