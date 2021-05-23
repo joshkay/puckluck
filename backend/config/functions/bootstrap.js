@@ -11,5 +11,5 @@
  */
 
 module.exports = async () => {
-  //await strapi.config.functions.nhl.loadAllData();
+  await strapi.config.functions.nhl.loadAllData();
 };

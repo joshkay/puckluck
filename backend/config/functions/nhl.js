@@ -6,9 +6,9 @@ const STATS_YEAR = '20202021';
 
 const loadAllData = async () => {
 
-  //await strapi.query('stat').delete();
-  //await strapi.query('player').delete();
-  //await strapi.query('team').delete();
+  await strapi.query('stat').delete();
+  await strapi.query('player').delete();
+  await strapi.query('team').delete();
 
   await loadRosters();
   await updatePoolStandings();
