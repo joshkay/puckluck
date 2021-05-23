@@ -2,7 +2,8 @@
   "scripts": {
     "frontend-dev": "npm run --prefix ./frontend dev",
     "backend-dev": "npm run --prefix ./backend dev",
-    "dev": "concurrently \"npm:frontend-dev\" \"npm:backend-dev\""
+    "dev": "concurrently \"npm:frontend-dev\" \"npm:backend-dev\"",
+    "deploy": "git push heroku `git subtree split --prefix backend master`:master --force"
   },
   "dependencies": {
     "concurrently": "^6.1.0"

@@ -38,6 +38,15 @@ const loadPlayer = async (player, strapiTeam) =>
   // Player is not in database
   if (strapiPlayer === undefined)
   {
+    console.log({
+      apiId: id,
+      name: `${fullName} (${strapiTeam.abbreviation})`,
+      firstName,
+      lastName,
+      position: positionCode,
+      jerseyNumber: primaryNumber,
+      team: strapiTeam.id
+    })
     strapiPlayer = await strapi.query('player').create({
       apiId: id,
       name: `${fullName} (${strapiTeam.abbreviation})`,
