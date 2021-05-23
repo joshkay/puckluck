@@ -13,9 +13,14 @@
 module.exports = {
   /**
    * Simple example.
-   * Every monday at 1am.
+   * Every day at 8am.
    */
-  // '0 1 * * 1': () => {
-  //
-  // }
+  '0 8 * * *': {
+    task: () => {
+      await strapi.config.functions.nhl.loadAllData();
+    },
+    options: {
+      tz: 'America/Toronto'
+    }
+  }
 };
