@@ -32,6 +32,12 @@ const loadPlayer = async (player, strapiTeam) =>
     }
   } = playerData.people[0];
 
+  // skip goalies!
+  if (positionCode === 'G')
+  {
+    return;
+  }
+
   let [strapiPlayer] = await strapi.query('player').
     find({ apiId: id });
 
