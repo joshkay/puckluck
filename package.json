@@ -1,11 +1,11 @@
 {
   "scripts": {
-    "frontend-dev": "npm run --prefix frontend dev",
-    "backend-dev": "npm run --prefix backend dev",
+    "frontend-dev": "npm run --prefix ./frontend dev",
+    "backend-dev": "npm run --prefix ./backend dev",
     "dev": "concurrently \"npm:frontend-dev\" \"npm:backend-dev\"",
     "deploy": "git push heroku `git subtree split --prefix backend master`:master --force",
-    "postinstall": "npm install --prefix backend && npm run build --prefix backend",
-    "start": "npm run --prefix frontend start"
+    "postinstall": "cd backend && npm install && npm run build",
+    "start": "npm run --prefix ./backend start"
   },
   "devDependencies": {
     "concurrently": "^6.1.0"
