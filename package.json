@@ -2,10 +2,7 @@
   "scripts": {
     "frontend-dev": "npm run --prefix ./frontend dev",
     "backend-dev": "npm run --prefix ./backend dev",
-    "dev": "concurrently \"npm:frontend-dev\" \"npm:backend-dev\"",
-    "deploy": "git push heroku `git subtree split --prefix backend master`:master --force",
-    "postinstall": "cd backend && npm install && npm run build",
-    "start": "npm run --prefix ./backend start"
+    "dev": "concurrently \"npm:frontend-dev\" \"npm:backend-dev\""
   },
   "devDependencies": {
     "concurrently": "^6.1.0"
