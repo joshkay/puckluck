@@ -2,7 +2,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import grey from '@material-ui/core/colors/grey';
 import deepPurple from '@material-ui/core/colors/deepPurple';
 
-export default createMuiTheme({
+let theme = createMuiTheme({
   palette: {
     primary: { 
       main: grey[900]
@@ -24,7 +24,19 @@ export default createMuiTheme({
       },
       h2: {
         fontSize: '2rem'
+      },
+      h3: {
+        fontSize: '1.5rem'
+      },
+      h4: {
+        fontSize: '1.4rem'
+      },
+      h5: {
+        fontSize: '1.3rem'
       }
     }
   }
 });
+//theme = responsiveFontSizes(theme);
+
+export default theme;

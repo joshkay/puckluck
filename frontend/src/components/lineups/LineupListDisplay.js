@@ -1,26 +1,75 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import PlayersGrid from './PlayersGrid';
 import Box from '@material-ui/core/Box';
 import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    overflow: 'visible',
+    marginTop: 15,
+    paddingTop: theme.spacing(4),
+    position: 'relative',
+    backgroundColor: theme.palette.primary.main,
+  },
+  cardHeading: {
+    position: 'absolute',
+    width: '100%',
+    height: 36,
+    top: -15,
+    display: 'flex',
+    alignItems: 'stretch',
+    justifyContent: 'center',
+    '& > *': {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: theme.palette.secondary.main,
+      color: theme.palette.secondary.contrastText,
+      borderRadius: 18,
+      marginLeft: theme.spacing(1),
+      paddingLeft: theme.spacing(1),
+      paddingRight: theme.spacing(1),
+    }
+  },
+  placeNumber: {
+    fontSize: 12,
+    position: 'absolute',
+    top: -5,
+    left: -5,
+    backgroundColor: theme.palette.secondary.main,
+    border: `1px solid ${theme.palette.secondary.contrastText}`,
+    height: 16,
+    width: 16,
+    //fontWeight: 800,
+    lineHeight: '15px',
+    borderRadius: '50%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  place: {
+    width: 36,
+    height: 36,
+    position: 'relative',
+  },
   points: {
     fontWeight: 800,
     fontSize: 30,
-    position: 'absolute',
+    //position: 'absolute',
     top: -10,
     left: 0,
-    lineHeight: 1,
+    lineHeight: 1
   },
   leaderPoints: {
-    animation: `$bounceZoom 2s ${theme.transitions.easing.easeInOut} infinite`
+    //animation: `$bounceZoom 2s ${theme.transitions.easing.easeInOut} infinite`
   },
   pointsContainer: {
-    transform: 'rotate(10deg)',
+    marginLeft: 'auto',
+    marginRight: theme.spacing(1),
+    //transform: 'rotate(10deg)',
   },
   pointTicks: {
     fontSize: 15,
@@ -46,69 +95,55 @@ const LineupListDisplay = ({ name, points, players, place, leader }) =>
   
   return (
     <Card className={classes.root}>
-      <CardContent>
-        <Box 
-          display="flex" 
-          flexDirection="row"
-          alignItems="top"
-          mb={1}
-        >
-          <Box mr={1}>
-            <Typography 
-              color="secondary" 
-              variant="h5" 
-              component="h2"
-            >
-              {`#${place}`}
-            </Typography>
-          </Box>
-         
-          <Typography variant="h5" component="h2">
-            {name}
-          </Typography>
-          <Box 
-            position="relative"
-            className={classes.pointsContainer}
+      <Box 
+        display="flex" 
+        flexDirection="row"
+        alignItems="top"
+        className={classes.cardHeading}
+      >
+        <div className={classes.place}>
+          <Typography
+            variant="h3"
+            className={classes.placeNumber}
           >
-            <Box
-              className={clsx(
-                classes.points,
-                leader && classes.leaderPoints
-              )}
-              display="flex"
-              flexDirection="row"
-              alignItems="center"
-            >
-              <Typography
-                className={classes.pointTicks}
-                color="secondary"
-                variant="h5" 
-                component="h3"
-              >
-                {'<'}
-              </Typography>
-              <Typography
-                color="secondary"
-                variant="h5" 
-                component="h3"
-              >
-                {points}
-              </Typography>
-              <Typography
-                className={classes.pointTicks}
-                color="secondary"
-                variant="h5" 
-                component="h3"
-              >
-                {'>'}
+            #
+          </Typography>
+          <Typography
+            variant="h3"
+          >
+            {place}
+          </Typography>
+        </div>
+        
+        <Typography
+          variant="h3"
+        >
+          {name}
+        </Typography>
+        <div className={classes.pointsContainer}>
+          <Box
+            className={clsx(
+              classes.points,
+              leader && classes.leaderPoints
+            )}
+            display="flex"
+            flexDirection="row"
+            alignItems="center"
+          >
+            <Typography variant="h3">
+              {points}
+            </Typography>
+            <Box ml={1}>
+              <Typography variant="h3">
+                points
               </Typography>
             </Box>
           </Box>
-        </Box>
-        <PlayersGrid
-          players={players}
-        />
-      </CardContent>
+        </div>
+      </Box>
+      <PlayersGrid
+        players={players}
+      />
     </Card>
   );
 }

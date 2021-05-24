@@ -1,27 +1,36 @@
 import { DataGrid } from '@material-ui/data-grid';
 import { makeStyles } from '@material-ui/core/styles';
+import Box from '@material-ui/core/Box';
 
 const columns = [
   {
     headerName: ' ',
-    field: 'team',
-    width: 50,
-    renderCell: ({ value }) => (
-      <img
-        style={{ width: 50, height: 50, marginLeft: -10 }}
-        src={`//www-league.nhlstatic.com/images/logos/teams-20202021-light/${value.apiId}.svg`}
-      />
-    )
-  },
-  {
-    headerName: ' ',
-    field: 'apiId',
-    width: 50,
-    renderCell: ({ value }) => (
-      <img
-        style={{ width: 50, height: 50, marginLeft: -10 }}
-        src={`https://cms.nhl.bamgrid.com/images/headshots/current/168x168/${value}.jpg`}
-      />
+    field: 'image',
+    width: 75,
+    renderCell: ({ row }) => (
+      <Box display="flex" flexDirection="row" 
+        justifyContent="center" alignItems="center">
+        <img
+          style={{ 
+            height: 30,
+            marginLeft: -15 
+          }}
+          src={`//www-league.nhlstatic.com/images/logos/teams-20202021-light/${row.team.apiId}.svg`}
+        />
+        <img
+          style={{ 
+            height: 40, 
+            objectFit: 'cover',
+            border: '1px solid rgb(224, 224, 224)',
+            borderRadius: '50%',
+            width: 35,
+            height: 35,
+            marginLeft: -5,
+            boxShadow: '0 10px 6px -6px #777'
+          }}
+          src={`https://cms.nhl.bamgrid.com/images/headshots/current/168x168/${row.apiId}.jpg`}
+        />
+      </Box>
     )
   },
   { 
@@ -40,7 +49,8 @@ const useStyles = makeStyles(theme => ({
     '& .MuiDataGrid-iconButtonContainer': {
       position: 'absolute', left: -4, top: -10,
       color: theme.palette.secondary.main
-    }
+    },
+    backgroundColor: theme.palette.background.paper
   }
 }));
 
@@ -68,20 +78,18 @@ const PlayersGrid = ({ players }) =>
   const classes = useStyles();
   
   return (
-    <div style={{ height: 400, width: '100%' }}>
-      <DataGrid 
-        className={classes.root}
-        rows={parsePlayers(players)} 
-        columns={columns}
-        sortModel={sortModel}
-        density="compact"
-        disableColumnMenu
-        disableSelectionOnClick
-        hideFooter
-        disableColumnSelector
-        autoHeight
-      />
-    </div>
+    <DataGrid
+      className={classes.root}
+      rows={parsePlayers(players)} 
+      columns={columns}
+      sortModel={sortModel}
+      density="compact"
+      disableColumnMenu
+      disableSelectionOnClick
+      hideFooter
+      disableColumnSelector
+      autoHeight
+    />
   );
 }
 
