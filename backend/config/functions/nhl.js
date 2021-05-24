@@ -13,7 +13,7 @@ const loadAllData = async () => {
   await updatePoolStandings();
 }
 
-const loadPlayer = async (player, strapiTeam) => 
+const loadPlayer = async (player, team) => 
 {
   const { data: playerData } = await axios.get(
     `${BASE_URL}/people/${player.person.id}`
@@ -46,24 +46,24 @@ const loadPlayer = async (player, strapiTeam) =>
     try {
       strapiPlayer = await strapi.query('player').create({
         apiId: id,
-        name: `${fullName} (${strapiTeam.abbreviation})`,
+        name: `${fullName} (${team.abbreviation})`,
         firstName,
         lastName,
         position: positionCode,
         jerseyNumber: Number.isInteger(primaryNumber) ? parseInt(primaryNumber) : null,
-        team: strapiTeam.id
+        team: team.id
       })
     }
     catch (err)
     {
       console.log({
         apiId: id,
-        name: `${fullName} (${strapiTeam.abbreviation})`,
+        name: `${fullName} (${team.abbreviation})`,
         firstName,
         lastName,
         position: positionCode,
         jerseyNumber: Number.isInteger(primaryNumber) ? parseInt(primaryNumber) : null,
-        team: strapiTeam.id
+        team: team.id
       })
       console.log(err);
     }
@@ -72,21 +72,22 @@ const loadPlayer = async (player, strapiTeam) =>
   {
     strapiPlayer = await strapi.query('player').update({ id: strapiPlayer.id }, {
       apiId: id,
-      name: `${fullName} (${strapiTeam.abbreviation})`,
+      name: `${fullName} (${team.abbreviation})`,
       firstName,
       lastName,
       position: positionCode,
       jerseyNumber: Number.isInteger(primaryNumber) ? parseInt(primaryNumber) : null,
-      team: strapiTeam.id
+      team: team.id
     })
   }
 
-  await loadStats(strapiPlayer);
+  await loadStats(strapiPlayer, team);
 }
 
 const loadTeam = async (team) => {
   console.log(`Loading Team: ${team.team.name}`);
   const teamId = team.team.id;
+  const active = team.seriesRecord.losses < 4;
   
   const strapiTeamQuery = await strapi.query('team').
     find({ apiId: teamId });
@@ -133,7 +134,10 @@ const loadTeam = async (team) => {
   const playerPromises = [];
   for (const player of teamRoster.roster)
   {
-    playerPromises.push(loadPlayer(player, strapiTeam));
+    playerPromises.push(loadPlayer(player, {
+      ...strapiTeam, 
+      active
+    }));
   }
   await Promise.all(playerPromises);
 
@@ -161,7 +165,7 @@ const loadRosters = async () => {
   console.log('Loaded NHL Players & Teams!');
 }
 
-const loadStats = async (strapiPlayer) => 
+const loadStats = async (player, team) => 
 {
   const { 
     data: { 
@@ -170,83 +174,53 @@ const loadStats = async (strapiPlayer) =>
       }]
     }
   } = await axios.get(
-    `https://statsapi.web.nhl.com/api/v1/people/${strapiPlayer.apiId}/stats?stats=statsSingleSeasonPlayoffs&season=${STATS_YEAR}`
+    `https://statsapi.web.nhl.com/api/v1/people/${player.apiId}/stats?stats=statsSingleSeasonPlayoffs&season=${STATS_YEAR}`
   )
   
+  let stats;
   if (splits.length > 0)
   {
-    const stats = splits[0].stat;
-    const strapiStatsQuery = strapiPlayer.stats.find(
-      ({ year }) => year == STATS_YEAR);
-  
-    // existing strapi stats found - update
-    if (strapiStatsQuery)
-    {
-      //console.log(`Updating Existing Stats for ${strapiPlayer.name}...`);
-      await strapi.query('stat').update({ id: strapiStatsQuery.id }, {
-        points: stats.points,
-        goals: stats.goals,
-        assists: stats.assists,
-      });
-    }
-    // create new stats
-    else
-    {
-      //console.log(`Creating New Stats for ${strapiPlayer.name}...`);
-      await strapi.query('stat').create({
-        year: STATS_YEAR,
-        type: 'playoffs',
-        points: Number.isInteger(stats.points) ? parseInt(stats.points) : null,
-        goals: Number.isInteger(stats.goals) ? parseInt(stats.goals) : null,
-        assists: Number.isInteger(stats.assists) ? parseInt(stats.assists) : null,
-        player: strapiPlayer.id
-      });
-    }
+    stats = splits[0].stat;
   }
-  
-  //console.log('Loaded NHL Playoff Stats!');
-}
-
-const loadStatsOld = async () => 
-{
-  console.log('Loading NHL Playoff Stats...');
-  const { data } = await axios.get(
-    `https://api.nhle.com/stats/rest/en/skater/summary?&start=100&limit=100&factCayenneExp=gamesPlayed%3E=1&cayenneExp=gameTypeId=3%20and%20seasonId=${STATS_YEAR}`
-  )
-
-  for (const stats of data.data)
+  else
   {
-    const [strapiPlayer] = await strapi.query('player').
-      find({ apiId: stats.playerId });
-
-    const strapiStatsQuery = strapiPlayer.stats.find(
-      ({ year }) => year == STATS_YEAR);
-
-    // existing strapi stats found - update
-    if (strapiStatsQuery)
-    {
-      console.log(`Updating Existing Stats for ${strapiPlayer.name}...`);
-      await strapi.query('stat').update({ id: strapiStatsQuery.id }, {
-        points: stats.points,
-        goals: stats.goals,
-        assists: stats.assists,
-      });
-    }
-    // create new stats
-    else
-    {
-      console.log(`Creating New Stats for ${strapiPlayer.name}...`);
-      await strapi.query('stat').create({
-        year: STATS_YEAR,
-        type: 'playoffs',
-        points: stats.points,
-        goals: stats.goals,
-        assists: stats.assists,
-        player: strapiPlayer.id
-      });
+    stats = {
+      points: 0,
+      goals: 0,
+      assists: 0
     }
   }
-  console.log('Loaded NHL Playoff Stats!');
+
+  const strapiStatsQuery = player.stats.find(
+    ({ year }) => year == STATS_YEAR);
+  
+  // existing strapi stats found - update
+  if (strapiStatsQuery)
+  {
+    //console.log(`Updating Existing Stats for ${player.name}...`);
+    await strapi.query('stat').update({ id: strapiStatsQuery.id }, {
+      points: stats.points,
+      goals: stats.goals,
+      assists: stats.assists,
+      active: team.active
+    });
+  }
+  // create new stats
+  else
+  {
+    //console.log(`Creating New Stats for ${player.name}...`);
+    await strapi.query('stat').create({
+      year: STATS_YEAR,
+      type: 'playoffs',
+      points: Number.isInteger(stats.points) ? parseInt(stats.points) : null,
+      goals: Number.isInteger(stats.goals) ? parseInt(stats.goals) : null,
+      assists: Number.isInteger(stats.assists) ? parseInt(stats.assists) : null,
+      player: player.id,
+      active: team.active
+    });
+  }
+
+  //console.log('Loaded NHL Playoff Stats!');
 }
 
 const updatePoolStandings = async () => 

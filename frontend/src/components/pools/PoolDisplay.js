@@ -25,6 +25,7 @@ const GET_POOL_LINEUPS = gql`
             points
             goals
             assists
+            active
           }
         }
       }

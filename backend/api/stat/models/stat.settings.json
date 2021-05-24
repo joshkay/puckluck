@@ -2,7 +2,8 @@
   "kind": "collectionType",
   "collectionName": "stats",
   "info": {
-    "name": "Stat"
+    "name": "Stat",
+    "description": ""
   },
   "options": {
     "increments": true,
@@ -29,6 +30,10 @@
     "player": {
       "model": "player",
       "via": "stats"
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
     }
   }
 }

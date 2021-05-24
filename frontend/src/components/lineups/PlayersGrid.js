@@ -1,45 +1,47 @@
 import { DataGrid } from '@material-ui/data-grid';
 import { makeStyles } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
+import PlayerTeamFace from 'components/players/PlayerTeamFace';
+import PlayerName from 'components/players/PlayerName';
+import PlayerStat from 'components/players/PlayerStat';
 
 const columns = [
   {
     headerName: ' ',
     field: 'image',
-    width: 75,
+    width: 80,
     renderCell: ({ row }) => (
-      <Box display="flex" flexDirection="row" 
-        justifyContent="center" alignItems="center">
-        <img
-          style={{ 
-            height: 30,
-            marginLeft: -15 
-          }}
-          src={`//www-league.nhlstatic.com/images/logos/teams-20202021-light/${row.team.apiId}.svg`}
-        />
-        <img
-          style={{ 
-            height: 40, 
-            objectFit: 'cover',
-            border: '1px solid rgb(224, 224, 224)',
-            borderRadius: '50%',
-            width: 35,
-            height: 35,
-            marginLeft: -5,
-            boxShadow: '0 10px 6px -6px #777'
-          }}
-          src={`https://cms.nhl.bamgrid.com/images/headshots/current/168x168/${row.apiId}.jpg`}
-        />
-      </Box>
+      <PlayerTeamFace 
+        apiId={row.apiId} 
+        teamApiId={row.team.apiId} 
+        active={row.active}
+      />
     )
   },
   { 
     field: 'fullName', headerName: 'Name', flex: 1,
-    valueGetter: ({ row }) => `${row.firstName} ${row.lastName}`
+    renderCell: ({ row }) => (
+      <PlayerName
+        firstName={row.firstName}
+        lastName={row.lastName}
+        active={row.active}
+      />
+    )
   },
-  { field: 'points', headerName: 'P', width: 40 },
-  { field: 'goals', headerName: 'G', width: 40 },
-  { field: 'assists', headerName: 'A', width: 40 },
+  { field: 'points', headerName: 'P', width: 40, 
+    renderCell: ({ row, value }) => (
+      <PlayerStat active={row.active} value={value} />
+    )
+  },
+  { field: 'goals', headerName: 'G', width: 40, 
+    renderCell: ({ row, value }) => (
+      <PlayerStat active={row.active} value={value} />
+    )
+  },
+  { field: 'assists', headerName: 'A', width: 40, 
+    renderCell: ({ row, value }) => (
+      <PlayerStat active={row.active} value={value} />
+    )
+  },
   { field: 'firstName', headerName: 'First name', hide: true },
   { field: 'lastName', headerName: 'Last name', hide: true }
 ];
@@ -64,7 +66,8 @@ const parsePlayers = (players) => players.map(p =>
     ...player,
     points: stats ? stats.points : 0,
     goals: stats ? stats.goals : 0,
-    assists: stats ? stats.assists : 0
+    assists: stats ? stats.assists : 0,
+    active: stats ? stats.active : false
   }
 });
 
