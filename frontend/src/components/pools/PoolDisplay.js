@@ -1,5 +1,4 @@
 import { gql, useQuery } from '@apollo/client';
-import { useRouter } from "next/router";
 import LineupList from 'components/lineups/LineupList';
 import { Box, Typography } from '@material-ui/core';
 
@@ -33,12 +32,11 @@ const GET_POOL_LINEUPS = gql`
   }
 `;
 
-const PoolDisplay = () => 
+const PoolDisplay = ({ slug }) => 
 {
-  const router = useRouter();
   const { loading, error, data } = useQuery(GET_POOL_LINEUPS, {
     variables: { 
-      slug: router.query.slug 
+      slug 
     },
   });
 
