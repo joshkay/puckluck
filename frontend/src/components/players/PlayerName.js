@@ -4,7 +4,7 @@ import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
   name: {
-    fontWeight: 400
+    fontWeight: 800
   },
   inactive: {
     fontWeight: 100,

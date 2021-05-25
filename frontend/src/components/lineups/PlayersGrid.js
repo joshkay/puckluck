@@ -27,17 +27,17 @@ const columns = [
       />
     )
   },
-  { field: 'points', headerName: 'P', width: 40, 
+  { field: 'points', headerName: 'P', width: 40, align: 'center',
     renderCell: ({ row, value }) => (
       <PlayerStat active={row.active} value={value} />
     )
   },
-  { field: 'goals', headerName: 'G', width: 40, 
+  { field: 'goals', headerName: 'G', width: 40, align: 'center', 
     renderCell: ({ row, value }) => (
       <PlayerStat active={row.active} value={value} />
     )
   },
-  { field: 'assists', headerName: 'A', width: 40, 
+  { field: 'assists', headerName: 'A', width: 40, align: 'center',
     renderCell: ({ row, value }) => (
       <PlayerStat active={row.active} value={value} />
     )

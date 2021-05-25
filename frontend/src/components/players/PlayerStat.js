@@ -3,11 +3,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
-  name: {
+  stat: {
     fontWeight: 800
   },
   inactive: {
-    fontWeight: 400,
+    fontWeight: 100,
     opacity: '50%'
     //color: theme.palette.error.main,
     //textDecoration: 'line-through',
@@ -20,7 +20,7 @@ const PlayerStat = ({ value, active }) =>
 
   return (
     <div className={clsx(
-      classes.name,
+      classes.stat,
       !active && classes.inactive
     )}>
       {`${value}`}
