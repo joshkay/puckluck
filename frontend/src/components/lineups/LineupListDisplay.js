@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
+import Collapse from '@material-ui/core/Collapse';
 import PlayersGrid from './PlayersGrid';
 import Box from '@material-ui/core/Box';
 import clsx from 'clsx';
@@ -10,18 +11,21 @@ const useStyles = makeStyles(theme => ({
   root: {
     overflow: 'visible',
     marginTop: 15,
-    paddingTop: theme.spacing(4),
     position: 'relative',
     backgroundColor: theme.palette.primary.main,
   },
+  cardTop: {
+    cursor: 'pointer',
+    height: 30
+  },
   cardHeading: {
+    pointerEvents: 'none',
+    display: 'flex', 
+    flexDirection: 'row',
     position: 'absolute',
     width: '100%',
     height: 36,
     top: -15,
-    display: 'flex',
-    alignItems: 'stretch',
-    justifyContent: 'center',
     '& > *': {
       display: 'flex',
       alignItems: 'center',
@@ -89,18 +93,31 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const LineupListDisplay = ({ name, points, players, place, leader }) => 
+const LineupListDisplay = ({ 
+  collapse, expand,
+  name, points, players, place, leader 
+}) => 
 {
   const classes = useStyles();
+  const [collapsed, setCollapsed] = useState(false);
+  
+  useEffect(() => {
+    if (collapse)
+    {
+      setCollapsed(true);
+    }
+  }, [collapse]);
+  
+  useEffect(() => {
+    if (expand)
+    {
+      setCollapsed(false);
+    }
+  }, [expand]);
   
   return (
     <Card className={classes.root}>
-      <Box 
-        display="flex" 
-        flexDirection="row"
-        alignItems="top"
-        className={classes.cardHeading}
-      >
+      <div className={classes.cardHeading}>
         <div className={classes.place}>
           <Typography
             variant="h3"
@@ -140,10 +157,16 @@ const LineupListDisplay = ({ name, points, players, place, leader }) =>
             </Box>
           </Box>
         </div>
-      </Box>
-      <PlayersGrid
-        players={players}
+      </div>
+      <Box 
+        onClick={() => setCollapsed((prevCollapsed) => !prevCollapsed)}
+        className={classes.cardTop}
       />
+      <Collapse in={!collapsed}>
+        <PlayersGrid
+          players={players}
+        />
+      </Collapse>
     </Card>
   );
 }

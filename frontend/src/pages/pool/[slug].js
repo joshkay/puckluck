@@ -2,7 +2,9 @@ import PoolDisplay from 'components/pools/PoolDisplay';
 import { useRouter } from "next/router";
 
 export const getStaticProps = () => {
-  return {};
+  return {
+    props: {}
+  };
 }
 
 export const getStaticPaths = () => {

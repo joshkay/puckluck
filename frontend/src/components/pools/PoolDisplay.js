@@ -1,6 +1,9 @@
+import React, { useEffect, useState } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import LineupList from 'components/lineups/LineupList';
-import { Box, Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
 
 const GET_POOL_LINEUPS = gql`
   query($slug: String!) {
@@ -40,15 +43,44 @@ const PoolDisplay = ({ slug }) =>
     },
   });
 
+  const [collapseAll, setCollapseAll] = useState(false);
+  const [expandAll, setExpandAll] = useState(false);
+
+  useEffect(() => {
+    if (expandAll)
+    {
+      setExpandAll(false);
+    }
+  }, [expandAll]);
+  
+  useEffect(() => {
+    if (collapseAll)
+    {
+      setCollapseAll(false);
+    }
+  }, [collapseAll])
+
   if (error) 
   {
     console.log(error);
-    return "Error Loading Pool";
+    return (
+      <Box p={2}>
+        <Typography color="error" variant="h1">
+          Error Loading Pool!
+        </Typography>
+      </Box>
+    );
   }
   
   if (loading) 
   {
-    return <h1>Loading ...</h1>;
+    return (
+      <Box p={2}>
+        <Typography variant="h1">
+          Loading...
+        </Typography>
+      </Box>
+    );
   }
 
   if (data.pools && data.pools.length === 1) 
@@ -56,10 +88,26 @@ const PoolDisplay = ({ slug }) =>
     const pool = data.pools[0];
     return (
       <Box p={2}>
-        <Typography gutterBottom variant="h1">
-          {pool.name}
-        </Typography>
-        <LineupList lineups={pool.lineups} />
+        <Box display="flex" alignItems="center">
+          <Typography gutterBottom variant="h1">
+            {pool.name}
+          </Typography>
+          <Box ml={2} 
+            display="flex"
+          >
+            <Button onClick={() => setCollapseAll(true)}>
+              Collapse All
+            </Button>
+            <Button onClick={() => setExpandAll(true)}>
+              Expand All
+            </Button>
+          </Box>
+        </Box>
+        <LineupList
+          expandAll={expandAll}
+          collapseAll={collapseAll} 
+          lineups={pool.lineups}
+        />
       </Box>
     );
   }

@@ -5,12 +5,11 @@ import LineupListDisplay from './LineupListDisplay';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1,
-    padding: theme.spacing(2)
+    flexGrow: 1
   },
 }));
 
-const LineupList = ({ lineups }) => 
+const LineupList = ({ expandAll, collapseAll, lineups }) => 
 {
   const classes = useStyles();
 
@@ -31,6 +30,8 @@ const LineupList = ({ lineups }) =>
           return (
             <Grid key={index} item xs={12} md={6} lg={4}>
               <LineupListDisplay
+                collapse={collapseAll}
+                expand={expandAll}
                 leader={lineups[0].points <= lineup.points}
                 place={place}
                 {...lineup} 

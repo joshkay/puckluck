@@ -4,10 +4,10 @@ import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
   name: {
-    fontWeight: 800
+    fontWeight: 400
   },
   inactive: {
-    fontWeight: 400,
+    fontWeight: 100,
     opacity: '50%'
     //color: theme.palette.error.main,
     //textDecoration: 'line-through',
