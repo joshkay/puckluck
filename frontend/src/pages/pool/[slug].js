@@ -6,7 +6,10 @@ export const getStaticProps = () => {
 }
 
 export const getStaticPaths = () => {
-  return {};
+  return {
+    paths: [],
+    fallback: true
+  };
 }
 
 const Pool = () => 
