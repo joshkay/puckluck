@@ -43,22 +43,7 @@ const PoolDisplay = ({ slug }) =>
     },
   });
 
-  const [collapseAll, setCollapseAll] = useState(false);
-  const [expandAll, setExpandAll] = useState(false);
-
-  useEffect(() => {
-    if (expandAll)
-    {
-      setExpandAll(false);
-    }
-  }, [expandAll]);
-  
-  useEffect(() => {
-    if (collapseAll)
-    {
-      setCollapseAll(false);
-    }
-  }, [collapseAll])
+  const [expand, setExpand] = useState(null);
 
   if (error) 
   {
@@ -95,17 +80,17 @@ const PoolDisplay = ({ slug }) =>
           <Box ml={2} 
             display="flex"
           >
-            <Button onClick={() => setCollapseAll(true)}>
+            <Button onClick={() => setExpand(false)}>
               Collapse All
             </Button>
-            <Button onClick={() => setExpandAll(true)}>
+            <Button onClick={() => setExpand(true)}>
               Expand All
             </Button>
           </Box>
         </Box>
         <LineupList
-          expandAll={expandAll}
-          collapseAll={collapseAll} 
+          expand={expand}
+          clearExpand={() => setExpand(null)}
           lineups={pool.lineups}
         />
       </Box>

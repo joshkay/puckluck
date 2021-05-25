@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const LineupList = ({ expandAll, collapseAll, lineups }) => 
+const LineupList = ({ expand, clearExpand, lineups }) => 
 {
   const classes = useStyles();
 
@@ -30,8 +30,8 @@ const LineupList = ({ expandAll, collapseAll, lineups }) =>
           return (
             <Grid key={index} item xs={12} md={6} lg={4}>
               <LineupListDisplay
-                collapse={collapseAll}
-                expand={expandAll}
+                expand={expand}
+                clearExpand={clearExpand}
                 leader={lineups[0].points <= lineup.points}
                 place={place}
                 {...lineup} 

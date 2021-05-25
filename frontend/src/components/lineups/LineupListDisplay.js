@@ -120,24 +120,17 @@ const useStyles = makeStyles(theme => {
 });
 
 const LineupListDisplay = ({ 
-  collapse, expand,
+  expand, clearExpand,
   name, points, players, place, leader 
 }) => 
 {
   const classes = useStyles();
-  const [collapsed, setCollapsed] = useState(false);
+  const [expanded, setExpanded] = useState(expand);
   
   useEffect(() => {
-    if (collapse)
+    if (expand !== null)
     {
-      setCollapsed(true);
-    }
-  }, [collapse]);
-  
-  useEffect(() => {
-    if (expand)
-    {
-      setCollapsed(false);
+      setExpanded(expand);
     }
   }, [expand]);
   
@@ -185,16 +178,19 @@ const LineupListDisplay = ({
         </div>
       </div>
       <Box 
-        onClick={() => setCollapsed((prevCollapsed) => !prevCollapsed)}
+        onClick={() => {
+          clearExpand();
+          setExpanded((prevExpanded) => !prevExpanded);
+        }}
         className={classes.cardTop}
       >
         <KeyboardArrowDownIcon 
           className={clsx(classes.expandIcon, {
-            [classes.expanded]: !collapsed,
+            [classes.expanded]: expanded,
           })} 
         />
       </Box>
-      <Collapse in={!collapsed}>
+      <Collapse in={expanded}>
         <PlayersGrid
           players={players}
         />
