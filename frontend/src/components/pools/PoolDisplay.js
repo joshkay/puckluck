@@ -43,7 +43,7 @@ const PoolDisplay = ({ slug }) =>
     },
   });
 
-  const [expand, setExpand] = useState(null);
+  const [expand, setExpand] = useState(true);
 
   if (error) 
   {

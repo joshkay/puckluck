@@ -16,7 +16,8 @@ const LineupList = ({ expand, clearExpand, lineups }) =>
   let place = 1;
 
   return (
-    <Grid className={classes.root} 
+    <Grid 
+      className={classes.root} 
       container 
       spacing={2}>
       {

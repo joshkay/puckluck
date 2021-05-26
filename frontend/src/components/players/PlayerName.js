@@ -9,8 +9,6 @@ const useStyles = makeStyles(theme => ({
   inactive: {
     fontWeight: 100,
     opacity: '50%'
-    //color: theme.palette.error.main,
-    //textDecoration: 'line-through',
   }
 }));
 

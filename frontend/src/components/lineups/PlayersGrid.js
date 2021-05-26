@@ -18,7 +18,7 @@ const columns = [
     )
   },
   { 
-    field: 'fullName', headerName: 'Name', flex: 1,
+    field: 'lastName', headerName: 'Name', flex: 1,
     renderCell: ({ row }) => (
       <PlayerName
         firstName={row.firstName}
@@ -42,8 +42,7 @@ const columns = [
       <PlayerStat active={row.active} value={value} />
     )
   },
-  { field: 'firstName', headerName: 'First name', hide: true },
-  { field: 'lastName', headerName: 'Last name', hide: true }
+  { field: 'firstName', headerName: 'First name', hide: true }
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -51,6 +50,12 @@ const useStyles = makeStyles(theme => ({
     '& .MuiDataGrid-iconButtonContainer': {
       position: 'absolute', left: -4, top: -10,
       color: theme.palette.secondary.main
+    },
+    '& .MuiDataGrid-columnSeparator': {
+      pointerEvents: 'none',
+    },
+    '& .MuiDataGrid-sortIcon': {
+      fill: theme.palette.secondary.main
     },
     backgroundColor: theme.palette.background.paper
   }
