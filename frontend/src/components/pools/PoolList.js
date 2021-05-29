@@ -32,7 +32,6 @@ const PoolList = () =>
   const classes = useStyles();
 
   const { loading, error, data } = useQuery(GET_POOLS);
-
   if (error) 
   {
     console.log(error);

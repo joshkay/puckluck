@@ -11,5 +11,7 @@
  */
 
 module.exports = async () => {
-  //await strapi.config.functions.nhl.loadAllData();
+  strapi.config.functions.nhl.loadAllData();
+  // await strapi.config.functions.pools.createKayPools();
+  // await strapi.config.functions.nhl.loadAllData();
 };

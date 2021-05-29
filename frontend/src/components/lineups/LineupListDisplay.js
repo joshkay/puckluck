@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
@@ -129,6 +129,7 @@ const LineupListDisplay = ({
 {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(expand);
+  const [activePlayerCount, setActivePlayerCount] = useState();
   
   useEffect(() => {
     if (expand !== null)
@@ -136,7 +137,20 @@ const LineupListDisplay = ({
       setExpanded(expand);
     }
   }, [expand]);
-  
+
+  useEffect(() => {
+    setActivePlayerCount(players.reduce((activeCount, player) => {
+      let active = false;
+      if (player.stats && player.stats[0])
+      {
+        console.log(activeCount, player.stats[0]);
+        active = player.stats[0].active;
+      }
+      
+      return activeCount + (active ? 1 : 0);
+    }, 0));
+  }, [players]);
+
   return (
     <Card className={classes.root}>
       <div className={classes.cardHeading}>
@@ -157,7 +171,7 @@ const LineupListDisplay = ({
         <Typography
           variant="h3"
         >
-          {name}
+          {`${name} (${activePlayerCount})`}
         </Typography>
         <div className={classes.pointsContainer}>
           <Box

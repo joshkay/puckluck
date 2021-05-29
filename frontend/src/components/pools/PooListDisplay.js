@@ -30,7 +30,7 @@ const PoolListDisplay = ({
           <CardMedia
             component="img"
             className={classes.media}
-            image={`${process.env.NEXT_PUBLIC_BACKEND_URL}${image.url}`}
+            image={`${process.env.NEXT_PUBLIC_BACKEND_URL}${image && image.url}`}
             alt={`${name} Pool Image`}
           />
           <CardContent>
