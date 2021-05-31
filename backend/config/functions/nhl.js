@@ -1,7 +1,13 @@
 
 const axios = require('axios');
 
-const BASE_URL = 'https://statsapi.web.nhl.com/api/v1';
+const NHL_API_BASE_URL = 'https://statsapi.web.nhl.com/api/v1';
+
+const NBC_API_BASE_URL = 'https://www.nbcsportsedge.com/edge/api';
+const NBC_API_CONSTANTS = {
+  NHL_LEAGUE_ID: '14dd5dc9-65ef-4744-b48b-683511cf5302'
+};
+
 const STATS_YEAR = '20202021';
 
 const loadAllData = async () => {
@@ -16,7 +22,7 @@ const loadAllData = async () => {
 const loadPlayer = async (player, team) => 
 {
   const { data: playerData } = await axios.get(
-    `${BASE_URL}/people/${player.person.id}`
+    `${NHL_API_BASE_URL}/people/${player.person.id}`
   );
 
   const {
@@ -84,7 +90,7 @@ const loadPlayer = async (player, team) =>
   await loadStats(strapiPlayer, team);
 }
 
-const loadTeam = async (team) => {
+const loadTeam = async (team, nbcApiTeamId) => {
   console.log(`Loading Team: ${team.team.name}`);
   const teamId = team.team.id;
   const active = team.seriesRecord.losses < 4;
@@ -96,7 +102,7 @@ const loadTeam = async (team) => {
   if (strapiTeamQuery.length === 0)
   {
     const { data: teamData } = await axios.get(
-      `${BASE_URL}/teams/${teamId}`
+      `${NHL_API_BASE_URL}/teams/${teamId}`
     );
 
     const {
@@ -114,6 +120,7 @@ const loadTeam = async (team) => {
 
     strapiTeam = await strapi.query('team').create({
       apiId: teamId,
+      nbcApiId: nbcApiTeamId,
       name,
       abbreviation,
       teamName,
@@ -125,11 +132,19 @@ const loadTeam = async (team) => {
   else
   {
     strapiTeam = strapiTeamQuery[0];
+    await strapi.query('team').update({ id: strapiTeam.id }, {
+      nbcApiId: nbcApiTeamId,
+    });
   }
 
   const { data: teamRoster } = await axios.get(
-    `${BASE_URL}/teams/${teamId}/roster`
+    `${NHL_API_BASE_URL}/teams/${teamId}/roster`
   );
+
+  // TODO: find player by name, jersey #, position -> update injury status
+  const { data: { data: rosterInjuries } } = await axios.get(
+    `${NBC_API_BASE_URL}/injury?sort=-start_date&filter%5Bplayer.team.id%5D=${nbcApiTeamId}&filter%5Bplayer.status.active%5D=1&filter%5Bactive%5D=1&include=injury_type,player,player.status,player.position`
+  )
 
   const playerPromises = [];
   for (const player of teamRoster.roster)
@@ -148,7 +163,11 @@ const loadRosters = async () => {
   console.log('Loading NHL Players & Teams...');
 
   const { data: playoffsData } = await axios.get(
-    `${BASE_URL}/tournaments/playoffs?expand=round.series`
+    `${NHL_API_BASE_URL}/tournaments/playoffs?expand=round.series`
+  );
+
+  const { data: { data: nbcTeamData } } = await axios.get(
+    `${NBC_API_BASE_URL}/team/hockey?sort=locale&filter%5Bactive%5D=1&filter%5Bleague.id%5D=${NBC_API_CONSTANTS.NHL_LEAGUE_ID}`
   );
 
   let teamPromises = [];
@@ -156,7 +175,11 @@ const loadRosters = async () => {
   {
     for (const team of series.matchupTeams)
     {
-      teamPromises.push(loadTeam(team));
+      const teamName = team.team.name;
+      const nbcApiTeamId = nbcTeamData.find(({ attributes }) => (
+        attributes.name === teamName.replace('.', '').normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      )).id;
+      teamPromises.push(loadTeam(team, nbcApiTeamId));
     }
   }
 

@@ -28,8 +28,8 @@
       "type": "biginteger"
     },
     "team": {
-      "model": "team",
-      "via": "players"
+      "via": "players",
+      "model": "team"
     },
     "name": {
       "type": "string"
