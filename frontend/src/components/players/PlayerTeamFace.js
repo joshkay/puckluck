@@ -24,19 +24,33 @@ const useStyles = makeStyles(theme => ({
     opacity: '50%'
   },
   gameToday: {
-    backgroundColor: theme.palette.success.main,
-    height: 15,
-    width: 15,
+    height: 30,
+    width: 30,
     position: 'absolute',
-    borderRadius: '50%',
-    border: `1px solid ${theme.palette.success.main}`,
-    right: -10,
+    right: -15,
     '& > div': {
-      backgroundColor: theme.palette.success.main,
-      height: '100%',
-      width: '100%',
-      borderRadius: '50%',
-      border: `2px solid white`,
+      position: 'relative',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: 30,
+      width: 30,
+      '& > div': {
+        backgroundColor: theme.palette.success.main,
+        position: 'absolute',
+        height: 15,
+        width: 15,
+        borderRadius: '50%',
+      },
+      '& > div:nth-child(1)': {
+      },
+      '& > div:nth-child(2)': {
+        backgroundColor: theme.palette.primary.contrastText,
+        transform: 'scale(0.85, 0.85)'
+      },
+      '& > div:nth-child(3)': {
+        transform: 'scale(0.5, 0.5)'
+      }
     }
   }
 }));
@@ -66,7 +80,11 @@ const PlayerTeamFace = ({ apiId, teamApiId, gameToday, active }) =>
         gameToday ? (
           <Tooltip title="Game Today" placement="top">
             <div className={classes.gameToday}>
-              <div></div>
+              <div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
             </div>
           </Tooltip>
         ) : null

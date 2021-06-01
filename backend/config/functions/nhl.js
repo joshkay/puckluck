@@ -282,7 +282,7 @@ const loadTeam = async (team) =>
     playerInjuries[`${player.name} (${parseInt(player.jersey)})`] = {
       returns: injuryDetails.return_estimate,
       type: injuryType.name,
-      status: player.status.name,
+      status: player.status.name.replace('I.L.', 'IR'),
       startDate: injuryDetails.start_date
     }
   }

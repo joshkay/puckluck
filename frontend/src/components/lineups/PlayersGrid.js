@@ -8,7 +8,7 @@ const columns = [
   {
     headerName: ' ',
     field: 'team',
-    width: 90,
+    width: 95,
     renderCell: ({ row }) => (
       <PlayerTeamFace
         apiId={row.apiId} 
