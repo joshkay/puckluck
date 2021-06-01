@@ -1,5 +1,6 @@
 
 const axios = require('axios');
+const dayjs = require('dayjs');
 
 const NHL_API_BASE_URL = 'https://statsapi.web.nhl.com/api/v1';
 
@@ -109,7 +110,6 @@ const loadStats = async (player, team, injury) =>
     });
   }
 
-
   //console.log('Loaded NHL Playoff Stats!');
 }
 
@@ -183,7 +183,7 @@ const loadPlayer = async (player, team, injury) =>
   await loadStats(strapiPlayer, team, injury);
 }
 
-const loadTeam = async (team, nbcApiTeamId) => 
+const loadTeam = async (team) => 
 {
   console.log(`Loading Team: ${team.team.name}`);
 
@@ -215,7 +215,8 @@ const loadTeam = async (team, nbcApiTeamId) =>
 
     strapiTeam = await strapi.query('team').create({
       apiId: teamId,
-      nbcApiId: nbcApiTeamId,
+      gameToday: team.gameToday,
+      nbcApiId: team.nbcApiId,
       name,
       abbreviation,
       teamName,
@@ -228,7 +229,8 @@ const loadTeam = async (team, nbcApiTeamId) =>
   {
     strapiTeam = strapiTeamQuery[0];
     await strapi.query('team').update({ id: strapiTeam.id }, {
-      nbcApiId: nbcApiTeamId,
+      nbcApiId: team.nbcApiId,
+      gameToday: team.gameToday,
     });
   }
 
@@ -243,7 +245,7 @@ const loadTeam = async (team, nbcApiTeamId) =>
       included: rosterInjuriesRelationships
     } 
   } = await axios.get(
-    `${NBC_API_BASE_URL}/injury?sort=-start_date&filter%5Bplayer.team.id%5D=${nbcApiTeamId}&filter%5Bplayer.status.active%5D=1&filter%5Bactive%5D=1&include=player,injury_type,player.status`
+    `${NBC_API_BASE_URL}/injury?sort=-start_date&filter%5Bplayer.team.id%5D=${team.nbcApiId}&filter%5Bplayer.status.active%5D=1&filter%5Bactive%5D=1&include=player,injury_type,player.status`
   );
 
   let rosterInjuryTypes = {};
@@ -316,15 +318,40 @@ const loadRosters = async () => {
   );
 
   let teamPromises = [];
-  for (const series of playoffsData.rounds[0].series)
+  let teamsLoaded = [];
+  
+  for (let i = playoffsData.rounds.length - 1; i >= 0; i--)
   {
-    for (const team of series.matchupTeams)
+    const round = playoffsData.rounds[i];
+
+    for (const series of round.series)
     {
-      const teamName = team.team.name;
-      const nbcApiTeamId = nbcTeamData.find(({ attributes }) => (
-        attributes.name === teamName.replace('.', '').normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-      )).id;
-      teamPromises.push(loadTeam(team, nbcApiTeamId));
+      if (series.matchupTeams === undefined)
+      {
+        continue;
+      }
+      const nextGame = series.currentGame.seriesSummary.gameTime;
+      const gameToday = dayjs().subtract(8, 'hours').isSame(dayjs(nextGame), 'day');
+
+      for (const team of series.matchupTeams)
+      {
+        if (teamsLoaded.includes(team.team.name))
+        {
+          continue;
+        }
+
+        const teamName = team.team.name;
+        const nbcApiTeamId = nbcTeamData.find(({ attributes }) => (
+          attributes.name === teamName.replace('.', '').normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        )).id;
+        teamPromises.push(loadTeam({
+          ...team, 
+          nbcApiId: nbcApiTeamId,
+          gameToday
+          //currentGame: 
+        }));
+        teamsLoaded.push(team.team.name);
+      }
     }
   }
 

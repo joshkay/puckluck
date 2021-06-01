@@ -22,6 +22,7 @@ const GET_POOL_LINEUPS = gql`
           lastName
           team {
             apiId
+            gameToday
           }
           stats(where: {year:20202021}) {
             points

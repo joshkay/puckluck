@@ -11,6 +11,7 @@
   },
   "devDependencies": {},
   "dependencies": {
+    "dayjs": "^1.10.5",
     "knex": "0.21.18",
     "pg": "^8.6.0",
     "pg-connection-string": "^2.4.0",

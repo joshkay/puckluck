@@ -8,11 +8,12 @@ const columns = [
   {
     headerName: ' ',
     field: 'team',
-    width: 80,
+    width: 90,
     renderCell: ({ row }) => (
       <PlayerTeamFace
         apiId={row.apiId} 
         teamApiId={row.team.apiId} 
+        gameToday={row.team.gameToday} 
         active={row.active}
       />
     )
@@ -98,6 +99,7 @@ const PlayersGrid = ({ players }) =>
       sortModel={sortModel}
       density="compact"
       disableColumnMenu
+      disableColumnSelector
       disableSelectionOnClick
       hideFooter
       disableColumnSelector

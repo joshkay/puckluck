@@ -39,6 +39,9 @@
     },
     "nbcApiId": {
       "type": "string"
+    },
+    "gameToday": {
+      "type": "boolean"
     }
   }
 }

@@ -2,7 +2,10 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import HealingIcon from '@material-ui/icons/Healing';
-import { Tooltip, Typography } from '@material-ui/core';
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+import Tooltip from '@material-ui/core/Tooltip';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles(theme => ({
   name: {
@@ -15,8 +18,8 @@ const useStyles = makeStyles(theme => ({
     opacity: '50%'
   },
   injury: {
-    marginLeft: theme.spacing(0.5)
-  }
+    fill: '#D8AF81'
+  },
 }));
 
 const PlayerName = ({ firstName, lastName, active, injury }) => 
@@ -35,18 +38,34 @@ const PlayerName = ({ firstName, lastName, active, injury }) =>
             <Typography>
               {injury.startDate}
             </Typography>
-            <Typography>
-              {injury.returns}
-            </Typography>
-            <Typography>
-              {injury.type}
-            </Typography>
+            {
+              injury.returns ? (
+                <Typography>
+                  {injury.returns}
+                </Typography>
+              ) : null
+            }
+            {
+              injury.type && injury.type !== '-' ? (
+                <Typography>
+                  {injury.type}
+                </Typography>
+              ) : null
+            }
             <Typography>
               {injury.status}
             </Typography>
           </>
         } placement="right">
-          <HealingIcon color="secondary" className={classes.injury} />
+          <Box ml={0.5} display="flex" alignItems="center">
+          {
+            injury.status === 'Suspended' ? (
+              <ErrorOutlineIcon color="error" />
+            ) : (
+              <HealingIcon className={classes.injury} />
+            )
+          }
+          </Box>
         </Tooltip>
       )}
     </div>
