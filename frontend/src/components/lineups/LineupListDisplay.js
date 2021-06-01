@@ -208,9 +208,9 @@ const LineupListDisplay = ({
         />
       </Box>
       <Collapse in={expanded}>
-        {/* <PlayersGrid
+        <PlayersGrid
           players={players}
-        /> */}
+        />
       </Collapse>
     </Card>
   );

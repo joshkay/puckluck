@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "injuries",
+  "info": {
+    "name": "Injury",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "status": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "startDate": {
+      "type": "date"
+    },
+    "returns": {
+      "type": "string"
+    },
+    "stat": {
+      "via": "injury",
+      "model": "stat"
+    }
+  }
+}

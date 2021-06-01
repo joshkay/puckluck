@@ -19,7 +19,101 @@ const loadAllData = async () => {
   await updatePoolStandings();
 }
 
-const loadPlayer = async (player, team) => 
+const loadStats = async (player, team, injury) => 
+{
+  const { 
+    data: { 
+      stats: [{
+        splits
+      }]
+    }
+  } = await axios.get(
+    `https://statsapi.web.nhl.com/api/v1/people/${player.apiId}/stats?stats=statsSingleSeasonPlayoffs&season=${STATS_YEAR}`
+  )
+  
+  let stats;
+  if (splits.length > 0)
+  {
+    stats = splits[0].stat;
+  }
+  else
+  {
+    stats = {
+      points: 0,
+      goals: 0,
+      assists: 0,
+      shots: 0,
+      games: 0,
+      penaltyMinutes: 0,
+      timeOnIce: "00:00",
+      shifts: 0
+    }
+  }
+
+  const strapiStats = player.stats.find(
+    ({ year }) => year == STATS_YEAR);
+  
+  // existing strapi stats found - update
+  if (strapiStats)
+  {
+    //console.log(`Updating Existing Stats for ${player.name}...`);
+    await strapi.query('stat').update({ id: strapiStats.id }, {
+      points: stats.points,
+      goals: stats.goals,
+      assists: stats.assists,
+      shots: stats.shots,
+      games: stats.games,
+      penaltyMinutes: stats.pim,
+      timeOnIce: stats.timeOnIce,
+      shifts: stats.shifts,
+      active: team.active
+    });
+  }
+  // create new stats
+  else
+  {
+    //console.log(`Creating New Stats for ${player.name}...`);
+    await strapi.query('stat').create({
+      year: STATS_YEAR,
+      type: 'playoffs',
+      points: stats.points,
+      goals: stats.goals,
+      assists: stats.assists,
+      shots: stats.shots,
+      games: stats.games,
+      penaltyMinutes: stats.pim,
+      timeOnIce: stats.timeOnIce,
+      shifts: stats.shifts,
+      player: player.id,
+      active: team.active
+    });
+  }
+
+  let strapiInjury;
+  if (strapiStats.injury)
+  {
+    if (injury)
+    {
+      await strapi.query('injury').update({ id: strapiStats.injury }, injury);
+    }
+    else
+    {
+      await strapi.query('injury').delete({ id: strapiStats.injury });
+    }
+  }
+  else if (injury)
+  {
+    strapiInjury = await strapi.query('injury').create({
+      ...injury,
+      stat: strapiStats.id
+    });
+  }
+
+
+  //console.log('Loaded NHL Playoff Stats!');
+}
+
+const loadPlayer = async (player, team, injury) => 
 {
   const { data: playerData } = await axios.get(
     `${NHL_API_BASE_URL}/people/${player.person.id}`
@@ -31,7 +125,6 @@ const loadPlayer = async (player, team) =>
     firstName,
     lastName,
     primaryNumber,
-    rosterStatus,
     primaryPosition: {
       code: positionCode
     }
@@ -43,8 +136,8 @@ const loadPlayer = async (player, team) =>
     return;
   }
 
-  let [strapiPlayer] = await strapi.query('player').
-    find({ apiId: id });
+  let strapiPlayer = await strapi.query('player').
+    findOne({ apiId: id });
 
   // Player is not in database
   if (strapiPlayer === undefined)
@@ -87,11 +180,13 @@ const loadPlayer = async (player, team) =>
     })
   }
 
-  await loadStats(strapiPlayer, team);
+  await loadStats(strapiPlayer, team, injury);
 }
 
-const loadTeam = async (team, nbcApiTeamId) => {
+const loadTeam = async (team, nbcApiTeamId) => 
+{
   console.log(`Loading Team: ${team.team.name}`);
+
   const teamId = team.team.id;
   const active = team.seriesRecord.losses < 4;
   
@@ -142,17 +237,67 @@ const loadTeam = async (team, nbcApiTeamId) => {
   );
 
   // TODO: find player by name, jersey #, position -> update injury status
-  const { data: { data: rosterInjuries } } = await axios.get(
-    `${NBC_API_BASE_URL}/injury?sort=-start_date&filter%5Bplayer.team.id%5D=${nbcApiTeamId}&filter%5Bplayer.status.active%5D=1&filter%5Bactive%5D=1&include=injury_type,player,player.status,player.position`
-  )
+  const { 
+    data: { 
+      data: rosterInjuries,
+      included: rosterInjuriesRelationships
+    } 
+  } = await axios.get(
+    `${NBC_API_BASE_URL}/injury?sort=-start_date&filter%5Bplayer.team.id%5D=${nbcApiTeamId}&filter%5Bplayer.status.active%5D=1&filter%5Bactive%5D=1&include=player,injury_type,player.status`
+  );
+
+  let rosterInjuryTypes = {};
+  let rosterPlayerInfo = {};
+  let rosterPlayerStatus = {};
+
+  for (let i = rosterInjuriesRelationships.length - 1; i >= 0; i--)
+  {
+    const rosterInjuriesRelationship = rosterInjuriesRelationships[i];
+    const { type, id, attributes, relationships } = rosterInjuriesRelationship;
+
+    if (type === 'player--hockey')
+    {
+      rosterPlayerInfo[id] = attributes;
+      rosterPlayerInfo[id].status = rosterPlayerStatus[relationships.status.data.id];
+    }
+    if (type === 'player_status')
+    {
+      rosterPlayerStatus[id] = attributes;
+    }
+    if (type === 'injury_type')
+    {
+      rosterInjuryTypes[id] = attributes;
+    }
+  }
+  
+  let playerInjuries = {};
+  for (const rosterInjury of rosterInjuries)
+  {
+    const injuryDetails = rosterInjury.attributes;
+    const injuryType = rosterInjuryTypes[rosterInjury.relationships.injury_type.data.id];
+    const player = rosterPlayerInfo[rosterInjury.relationships.player.data.id];
+    
+    playerInjuries[`${player.name} (${parseInt(player.jersey)})`] = {
+      returns: injuryDetails.return_estimate,
+      type: injuryType.name,
+      status: player.status.name,
+      startDate: injuryDetails.start_date
+    }
+  }
 
   const playerPromises = [];
   for (const player of teamRoster.roster)
   {
-    playerPromises.push(loadPlayer(player, {
-      ...strapiTeam, 
-      active
-    }));
+    const team = {
+      ...strapiTeam,
+      active,
+    };
+    const injury = playerInjuries[`${player.person.fullName} (${player.jerseyNumber})`];
+    playerPromises.push(loadPlayer(
+      player, 
+      team,
+      injury
+    ));
   }
   await Promise.all(playerPromises);
 
@@ -186,64 +331,6 @@ const loadRosters = async () => {
   await Promise.all(teamPromises);
 
   console.log('Loaded NHL Players & Teams!');
-}
-
-const loadStats = async (player, team) => 
-{
-  const { 
-    data: { 
-      stats: [{
-        splits
-      }]
-    }
-  } = await axios.get(
-    `https://statsapi.web.nhl.com/api/v1/people/${player.apiId}/stats?stats=statsSingleSeasonPlayoffs&season=${STATS_YEAR}`
-  )
-  
-  let stats;
-  if (splits.length > 0)
-  {
-    stats = splits[0].stat;
-  }
-  else
-  {
-    stats = {
-      points: 0,
-      goals: 0,
-      assists: 0
-    }
-  }
-
-  const strapiStatsQuery = player.stats.find(
-    ({ year }) => year == STATS_YEAR);
-  
-  // existing strapi stats found - update
-  if (strapiStatsQuery)
-  {
-    //console.log(`Updating Existing Stats for ${player.name}...`);
-    await strapi.query('stat').update({ id: strapiStatsQuery.id }, {
-      points: stats.points,
-      goals: stats.goals,
-      assists: stats.assists,
-      active: team.active
-    });
-  }
-  // create new stats
-  else
-  {
-    //console.log(`Creating New Stats for ${player.name}...`);
-    await strapi.query('stat').create({
-      year: STATS_YEAR,
-      type: 'playoffs',
-      points: Number.isInteger(stats.points) ? parseInt(stats.points) : null,
-      goals: Number.isInteger(stats.goals) ? parseInt(stats.goals) : null,
-      assists: Number.isInteger(stats.assists) ? parseInt(stats.assists) : null,
-      player: player.id,
-      active: team.active
-    });
-  }
-
-  //console.log('Loaded NHL Playoff Stats!');
 }
 
 const updatePoolStandings = async () => 

@@ -7,10 +7,10 @@ import PlayerStat from 'components/players/PlayerStat';
 const columns = [
   {
     headerName: ' ',
-    field: 'image',
+    field: 'team',
     width: 80,
     renderCell: ({ row }) => (
-      <PlayerTeamFace 
+      <PlayerTeamFace
         apiId={row.apiId} 
         teamApiId={row.team.apiId} 
         active={row.active}
@@ -24,6 +24,7 @@ const columns = [
         firstName={row.firstName}
         lastName={row.lastName}
         active={row.active}
+        injury={row.injury}
       />
     )
   },
@@ -57,6 +58,9 @@ const useStyles = makeStyles(theme => ({
     '& .MuiDataGrid-sortIcon': {
       fill: theme.palette.secondary.main
     },
+    '& .MuiDataGrid-columnHeaderTitle': {
+      minHeight: 39
+    },
     backgroundColor: theme.palette.background.paper
   }
 }));
@@ -72,7 +76,8 @@ const parsePlayers = (players) => players.map(p =>
     points: stats ? stats.points : 0,
     goals: stats ? stats.goals : 0,
     assists: stats ? stats.assists : 0,
-    active: stats ? stats.active : false
+    active: stats ? stats.active : false,
+    injury: stats ? stats.injury : undefined
   }
 });
 

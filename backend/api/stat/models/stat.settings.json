@@ -34,6 +34,22 @@
     "active": {
       "type": "boolean",
       "default": true
+    },
+    "injury": {
+      "model": "injury",
+      "via": "stat"
+    },
+    "games": {
+      "type": "integer"
+    },
+    "penaltyMinutes": {
+      "type": "integer"
+    },
+    "timeOnIce": {
+      "type": "string"
+    },
+    "shifts": {
+      "type": "integer"
     }
   }
 }

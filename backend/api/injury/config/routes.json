@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/injuries",
+      "handler": "injury.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/injuries/count",
+      "handler": "injury.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/injuries/:id",
+      "handler": "injury.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/injuries",
+      "handler": "injury.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/injuries/:id",
+      "handler": "injury.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/injuries/:id",
+      "handler": "injury.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
