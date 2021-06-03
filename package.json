@@ -6,5 +6,8 @@
   },
   "devDependencies": {
     "concurrently": "^6.1.0"
+  },
+  "dependencies": {
+    "@material-ui/data-grid": "^4.0.0-alpha.30"
   }
 }

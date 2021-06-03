@@ -55,7 +55,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const PlayerTeamFace = ({ apiId, teamApiId, gameToday, active }) => 
+const PlayerTeamFace = ({ 
+  apiId, teamApiId, 
+  gameToday, active, 
+  teamAbbreviation, firstName, lastName }) => 
 {
   const classes = useStyles();
 
@@ -67,6 +70,7 @@ const PlayerTeamFace = ({ apiId, teamApiId, gameToday, active }) =>
           classes.teamLogo,
           !active && classes.inactive
         )}
+        alt={`${teamAbbreviation} Logo`}
         src={`//www-league.nhlstatic.com/images/logos/teams-20202021-light/${teamApiId}.svg`}
       />
       <img
@@ -74,6 +78,7 @@ const PlayerTeamFace = ({ apiId, teamApiId, gameToday, active }) =>
           classes.playerLogo,
           !active && classes.inactive
         )}
+        alt={`${firstName} ${lastName}'s Face`}
         src={`https://cms.nhl.bamgrid.com/images/headshots/current/168x168/${apiId}.jpg`}
       />
       {

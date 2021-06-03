@@ -7,12 +7,15 @@ import PlayerStat from 'components/players/PlayerStat';
 const columns = [
   {
     headerName: ' ',
-    field: 'team',
+    field: 'teamAbbreviation',
     width: 95,
     renderCell: ({ row }) => (
       <PlayerTeamFace
+        firstName={row.firstName}
+        lastName={row.lastName}
         apiId={row.apiId} 
         teamApiId={row.team.apiId} 
+        teamAbbreviation={row.team.abbreviation} 
         gameToday={row.team.gameToday} 
         active={row.active}
       />
@@ -78,7 +81,8 @@ const parsePlayers = (players) => players.map(p =>
     goals: stats ? stats.goals : 0,
     assists: stats ? stats.assists : 0,
     active: stats ? stats.active : false,
-    injury: stats ? stats.injury : undefined
+    injury: stats ? stats.injury : undefined,
+    teamAbbreviation: player.team ? player.team.abbreviation : undefined
   }
 });
 

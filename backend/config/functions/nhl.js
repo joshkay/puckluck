@@ -74,7 +74,7 @@ const loadStats = async (player, team, injury) =>
   else
   {
     //console.log(`Creating New Stats for ${player.name}...`);
-    await strapi.query('stat').create({
+    strapiStats = await strapi.query('stat').create({
       year: STATS_YEAR,
       type: 'playoffs',
       points: stats.points,
@@ -140,7 +140,7 @@ const loadPlayer = async (player, team, injury) =>
     findOne({ apiId: id });
 
   // Player is not in database
-  if (strapiPlayer === undefined)
+  if (strapiPlayer == null)
   {
     try {
       strapiPlayer = await strapi.query('player').create({

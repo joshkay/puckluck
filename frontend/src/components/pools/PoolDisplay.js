@@ -21,6 +21,7 @@ const GET_POOL_LINEUPS = gql`
           firstName
           lastName
           team {
+            abbreviation
             apiId
             gameToday
           }
