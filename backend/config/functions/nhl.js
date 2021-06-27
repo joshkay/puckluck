@@ -51,7 +51,7 @@ const loadStats = async (player, team, injury) =>
     }
   }
 
-  const strapiStats = player.stats.find(
+  let strapiStats = player.stats.find(
     ({ year }) => year == STATS_YEAR);
   
   // existing strapi stats found - update
