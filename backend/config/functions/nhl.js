@@ -57,7 +57,19 @@ const loadStats = async (player, team, injury) =>
   // existing strapi stats found - update
   if (strapiStats)
   {
-    //console.log(`Updating Existing Stats for ${player.name}...`);
+    console.log(`Updating Existing Stats for ${player.name}...`);
+    console.log({
+      points: stats.points,
+      goals: stats.goals,
+      assists: stats.assists,
+      shots: stats.shots,
+      games: stats.games,
+      penaltyMinutes: stats.pim ? stats.pim : 0,
+      timeOnIce: stats.timeOnIce,
+      shifts: stats.shifts,
+      active: team.active
+    });
+    
     await strapi.query('stat').update({ id: strapiStats.id }, {
       points: stats.points,
       goals: stats.goals,
