@@ -73,7 +73,22 @@ const loadStats = async (player, team, injury) =>
   // create new stats
   else
   {
-    //console.log(`Creating New Stats for ${player.name}...`);
+    console.log(`Creating New Stats for ${player.name}...`);
+    console.log({
+      year: STATS_YEAR,
+      type: 'playoffs',
+      points: stats.points,
+      goals: stats.goals,
+      assists: stats.assists,
+      shots: stats.shots,
+      games: stats.games,
+      penaltyMinutes: stats.pim,
+      timeOnIce: stats.timeOnIce,
+      shifts: stats.shifts,
+      player: player.id,
+      active: team.active
+    });
+    
     strapiStats = await strapi.query('stat').create({
       year: STATS_YEAR,
       type: 'playoffs',
