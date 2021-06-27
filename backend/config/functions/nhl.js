@@ -64,7 +64,7 @@ const loadStats = async (player, team, injury) =>
       assists: stats.assists,
       shots: stats.shots,
       games: stats.games,
-      penaltyMinutes: stats.pim,
+      penaltyMinutes: stats.pim ? stats.pim : 0,
       timeOnIce: stats.timeOnIce,
       shifts: stats.shifts,
       active: team.active
